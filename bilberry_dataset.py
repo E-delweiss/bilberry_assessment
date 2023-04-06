@@ -43,25 +43,23 @@ class BilberryDataset(torch.utils.data.Dataset):
 
     def _preprocess(self, img_PIL:torch.Tensor)->torch.Tensor:
         ### Resizing
-        transform = torchvision.transforms.Compose([
-            torchvision.transforms.ToTensor(),
-            torchvision.transforms.Resize((160,160)) ### ????
-        ])
-        img_t = transform(img_PIL)
+        augment = torchvision.transforms.Resize((160,160)) ### ????
+        img_t = augment(img_PIL)
 
         ### Data augmentation
         if self.isAugment_bool:
             augment = torchvision.transforms.Compose([
+                torchvision.transforms.RandomCrop(size),
                 torchvision.transforms.RandomHorizontalFlip(p=0.5),
                 torchvision.transforms.ColorJitter(brightness=[0.5,2], contrast=[0.5,2.5], saturation=[0.5,1]),
-                torchvision.transforms.RandomAdjustSharpness(12, p=0.7), #### ???
-                torchvision.transforms.RandomRotation(degrees=5) ### ???
+                torchvision.transforms.RandomAdjustSharpness(5, p=0.5),
+                torchvision.transforms.ToTensor()
                 ])
             img_t = augment(img_t)
         
         ### Normalize data
         if self.isNormalize_bool:
-            mean, std = (0.4236, 0.3698, 0.3317), (0.2988, 0.2733, 0.2654)
+            mean, std = (0.4551, 0.4672, 0.4151), (0.2522, 0.2451, 0.2808)
             img_t = torchvision.transforms.Normalize(mean, std)(img_t)
 
         return img_t
@@ -120,4 +118,4 @@ def get_validation_dataset(BATCH_SIZE=None, **kwargs):
 
 if __name__ == "__main__":
     dataset = get_training_dataset(ratio=1, isAugment_bool=True, isNormalize_bool=False)
-    print(next(iter(dataset))[1])
+    print(next(iter(dataset))[0])
