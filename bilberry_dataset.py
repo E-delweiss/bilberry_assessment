@@ -43,13 +43,13 @@ class BilberryDataset(torch.utils.data.Dataset):
 
     def _preprocess(self, img_PIL:torch.Tensor)->torch.Tensor:
         ### Resizing
-        augment = torchvision.transforms.Resize((160,160)) ### ????
+        augment = torchvision.transforms.Resize((300,300)) ### ????
         img_t = augment(img_PIL)
 
         ### Data augmentation
         if self.isAugment_bool:
             augment = torchvision.transforms.Compose([
-                torchvision.transforms.RandomCrop(size),
+                torchvision.transforms.RandomCrop((224, 224)),
                 torchvision.transforms.RandomHorizontalFlip(p=0.5),
                 torchvision.transforms.ColorJitter(brightness=[0.5,2], contrast=[0.5,2.5], saturation=[0.5,1]),
                 torchvision.transforms.RandomAdjustSharpness(5, p=0.5),
@@ -89,11 +89,11 @@ class BilberryDataset(torch.utils.data.Dataset):
             img_path = self.imgset[idx]
             label = self.labelset[idx]
 
-        # img_path = self.imgset[idx]
+        img_path = self.imgset[idx]
         img_PIL = PIL.Image.open(img_path).convert('RGB')
         image = self._preprocess(img_PIL)
 
-        # label = self.labelset[idx]
+        label = self.labelset[idx]
         return image, torch.tensor(label).to(torch.int32)
 
 
