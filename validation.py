@@ -5,7 +5,7 @@ import numpy as np
 
 import metrics
 
-def validation_loop(model, validation_dataset, criterion, DO_VALIDATION:bool, VAL_EPOCHS:int=1)->float:
+def validation_loop(model, validation_dataset, criterion, DO_VALIDATION:bool)->float:
     """
     Execute validation loop. 
     Since the validation dataset is small, we use data augmentation.
@@ -33,24 +33,23 @@ def validation_loop(model, validation_dataset, criterion, DO_VALIDATION:bool, VA
 
         batch_acc = []
         batch_loss = []
-        for epoch in range(VAL_EPOCHS):
-            for (img, target) in validation_dataset:
-                img, target = img.to(device), target.to(device)
+        for (img, target) in validation_dataset:
+            img, target = img.to(device), target.to(device)
 
-                ### Disable autograd for validation
-                with torch.no_grad():
-                    ### prediction
-                    prediction = model(img).squeeze(1)
+            ### Disable autograd for validation
+            with torch.no_grad():
+                ### prediction
+                prediction = model(img).squeeze(1)
 
-                    ### loss 
-                    loss = criterion(prediction, target)
-                
-                ### Compute and save accuracy for each batch
-                acc = metrics.class_acc(target, prediction)
-                batch_acc.append(acc)
+                ### loss
+                loss = criterion(prediction, target)
+            
+            ### Compute and save accuracy for each batch
+            acc = metrics.class_acc(target, prediction)
+            batch_acc.append(acc)
 
-                ### Save loss
-                loss = batch_loss.append(loss.item())
+            ### Save loss
+            loss = batch_loss.append(loss.item())
 
         ### Compute validation accuracy and loss
         val_acc = np.mean(batch_acc)
