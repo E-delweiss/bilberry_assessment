@@ -44,8 +44,7 @@ class BilberryDataset(torch.utils.data.Dataset):
 
     def _preprocess(self, img_PIL:torch.Tensor)->torch.Tensor:
         ### Resizing
-        augment = torchvision.transforms.Resize(size=(250, 375))
-        img_t = augment(img_PIL)
+        img_t = torchvision.transforms.Resize(size=(250, 375))(img_PIL)
 
         ### Data augmentation
         if self.isAugment:
@@ -57,12 +56,21 @@ class BilberryDataset(torch.utils.data.Dataset):
                 torchvision.transforms.ToTensor()
                 ])
             img_t = augment(img_t)
-        
+
+        else:
+            transform = torchvision.transforms.Compose([
+                torchvision.transforms.Resize(size=(224, 224)),
+                torchvision.transforms.ToTensor()
+            ])
+            img_t = transform(img_t)
+
         ### Normalize data
         if self.isNormalize:
+            # Mean-Std compute from the whole dataset in utils.py
             mean, std = (0.4551, 0.4672, 0.4151), (0.2522, 0.2451, 0.2808)
             img_t = torchvision.transforms.Normalize(mean, std)(img_t)
 
+        
         return img_t
 
     def __len__(self):
@@ -118,5 +126,5 @@ def get_validation_dataset(BATCH_SIZE=None, **kwargs):
 
 
 if __name__ == "__main__":
-    dataset = get_validation_dataset(ratio=1, isAugment=True, isNormalize=False)
+    dataset = get_validation_dataset(ratio=1, isAugment=False, isNormalize=True)
     print(type(next(iter(dataset))[0]))
