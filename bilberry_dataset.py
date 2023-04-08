@@ -41,10 +41,26 @@ class BilberryDataset(torch.utils.data.Dataset):
         self.labelset = self.label_roads + self.label_fields
         self.imgset = self.imgset_roads + self.imgset_fields
 
+        ### Compute mean / std for normalization
+        self.mean, self.std = normalizer()
+
+
+    def _normalizer(self):
+        transform = torchvision.transforms.Compose([
+            torchvision.transforms.Resize((224,224)),
+            torchvision.transforms.ToTensor()
+        ])
+        data_PIL = [Image.open(img).convert('RGB') for img in self.imgset]
+        data_tensor = [transform(img_PIL).unsqueeze(0) for img_PIL in data_PIL]
+        data_tensor = torch.cat(data_tensor, dim=0)
+        torch.mean(data_tensor, dim=[0,2,3]), torch.std(data_tensor, dim=[0,2,3])
+        return mean, std
+
 
     def _preprocess(self, img_PIL:torch.Tensor)->torch.Tensor:
         ### Resizing
         img_t = torchvision.transforms.Resize(size=(250, 375))(img_PIL)
+        # img_t = torchvision.transforms.Resize(size=(300, 300))(img_PIL)
 
         ### Data augmentation
         if self.isAugment:
@@ -66,11 +82,8 @@ class BilberryDataset(torch.utils.data.Dataset):
 
         ### Normalize data
         if self.isNormalize:
-            # Mean-Std compute from the whole dataset in utils.py
-            mean, std = (0.4551, 0.4672, 0.4151), (0.2522, 0.2451, 0.2808)
-            img_t = torchvision.transforms.Normalize(mean, std)(img_t)
+            img_t = torchvision.transforms.Normalize(self.mean, self.std)(img_t)
 
-        
         return img_t
 
     def __len__(self):
