@@ -66,7 +66,7 @@ val_dataloader = get_validation_dataset(ratio=1, isNormalize=isNormalize_valset,
 
 ### Initialize log file
 ################################################################################
-print(f"[Training on] : {str(device).upper()}")
+print(f"\n\n[Training on] : {str(device).upper()}")
 print(f"Learning rate : {optimizer.defaults['lr']}")
 
 utils.create_logging(prefix=PREFIX)
@@ -82,10 +82,13 @@ logging.info(f"[START] : {time_formatted}")
 
 ### Training / Validation loops
 ################################################################################
-train_loss_list = []
-train_acc_list = []
+train_loss_epoch = []
+train_loss_batch = []
+train_acc_epoch = []
+train_acc_batch = []
 
-val_acc_list = []
+val_acc_epoch = []
+val_acc_batch = []
 
 start_time = datetime.datetime.now()
 for epoch in range(EPOCHS):
@@ -132,16 +135,18 @@ for epoch in range(EPOCHS):
             utils.pretty_print(batch, BATCH_SIZE, len(train_dataloader.dataset), current_loss, train_acc)
 
             ### Validation loop
-            val_acc = validation_loop(model, val_dataloader, DO_VALIDATION)
+            val_loss, val_acc = validation_loop(model, val_dataloader, criterion, DO_VALIDATION)
             val_acc_list.append(val_acc)
 
+            print(f"** Validation loss : {val_loss:.5f}")
             print(f"** Validation accuracy : {val_acc*100:.2f}%")
 
             # Write logs
             if batch == len(train_dataloader.dataset)//BATCH_SIZE:
                 print(f"Mean training loss for this epoch : {epochs_loss / len(train_dataloader):.5f} \n\n")
                 logging.info(f"Epoch {epoch+1}/{EPOCHS}")
-                logging.info(f"***** Training loss : {epochs_loss / len(train_dataloader):.5f}")
+                logging.info(f"** Training loss : {epochs_loss / len(train_dataloader):.5f}")
+                logging.info(f"** Validation loss : {val_loss:.5f}")
                 logging.info(f"***** Training acc : {train_acc*100:.2f}%")
                 logging.info(f"***** Validation acc : {val_acc*100:.2f}%")
 

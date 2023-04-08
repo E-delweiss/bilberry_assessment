@@ -5,7 +5,7 @@ import numpy as np
 
 import metrics
 
-def validation_loop(model, validation_dataset, DO_VALIDATION:bool, VAL_EPOCHS:int=1)->float:
+def validation_loop(model, validation_dataset, criterion, DO_VALIDATION:bool, VAL_EPOCHS:int=1)->float:
     """
     Execute validation loop. 
     Since the validation dataset is small, we use data augmentation.
@@ -14,10 +14,12 @@ def validation_loop(model, validation_dataset, DO_VALIDATION:bool, VAL_EPOCHS:in
     Args:
         model (torch.nn.Module): current model to validate
         validation_dataset (torch.utils.data.Dataset): validation dataset
+        criterion (torch.nn.modules.loss): loss function
         DO_VALIDATION (bool): do validation loop. If not, accuracy is set to 999
         VAL_EPOCHS (int): loop over validation dataset
 
     Returns:
+        val_loss (float): validation loss as the mean of all batch losses
         val_acc (float): validation accuracy as the mean of all batch accuracies.
     """
     if DO_VALIDATION:
@@ -30,6 +32,7 @@ def validation_loop(model, validation_dataset, DO_VALIDATION:bool, VAL_EPOCHS:in
         device = next(model.parameters()).device
 
         batch_acc = []
+        batch_loss = []
         for epoch in range(VAL_EPOCHS):
             for (img, target) in validation_dataset:
                 img, target = img.to(device), target.to(device)
@@ -38,19 +41,27 @@ def validation_loop(model, validation_dataset, DO_VALIDATION:bool, VAL_EPOCHS:in
                 with torch.no_grad():
                     ### prediction
                     prediction = model(img).squeeze(1)
+
+                    ### loss 
+                    loss = criterion(prediction, target)
                 
-                ### Compute and save accuracy for each batch and each epoch
+                ### Compute and save accuracy for each batch
                 acc = metrics.class_acc(target, prediction)
                 batch_acc.append(acc)
 
-        ### Compute validation accuracy
+                ### Save loss
+                loss = batch_loss.append(loss.item())
+
+        ### Compute validation accuracy and loss
         val_acc = np.mean(batch_acc)
+        val_loss = np.mean(batch_loss)
 
     else:
-        logging.warning(f"Validation loop disabled. Validation accuracy set to 999")
+        logging.warning(f"Validation loop disabled. Validation accuracy and loss are set to 999")
         val_acc = 999
+        val_loss = 999
 
-    return val_acc
+    return val_loss, val_acc
 
 
 

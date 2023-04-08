@@ -8,9 +8,13 @@ from icecream import ic
 class ResNetBilberry(torch.nn.Module):
     def __init__(self, pretrained):
         super(ResNetBilberry, self).__init__()
+        if pretrained:
+            PT_weights = torchvision.models.ResNet50_Weights.DEFAULT
+        else:
+            PT_weights = None
+
         ### Load ResNet model
-        self.resnet = torchvision.models.resnet50(pretrained=pretrained)
-        num_ftrs = self.resnet.fc.in_features
+        self.resnet = torchvision.models.resnet50(weights=PT_weights)
 
         ### Freeze ResNet weights
         if pretrained:
@@ -18,14 +22,12 @@ class ResNetBilberry(torch.nn.Module):
                 param.requires_grad = False
 
         ### Head part
+        num_ftrs = self.resnet.fc.in_features
         self.resnet.fc = torch.nn.Sequential(
             torch.nn.Linear(num_ftrs, 256),
             torch.nn.LayerNorm(256),
             torch.nn.ReLU(),
-            torch.nn.Linear(256, 128),
-            torch.nn.LayerNorm(128),
-            torch.nn.ReLU(),
-            torch.nn.Linear(128, 1),
+            torch.nn.Linear(256, 1),
         )
 
     def forward(self, input:torch.Tensor)->tuple:
@@ -37,9 +39,44 @@ class ResNetBilberry(torch.nn.Module):
         return x
 
 
+class EfficientNetBilberry(torch.nn.Module):
+    def __init__(self, pretrained):
+        super(EfficientNetBilberry, self).__init__()
+        if pretrained:
+            PT_weights = torchvision.models.EfficientNet_B4_Weights.DEFAULT
+        else:
+            PT_weights = None
+
+        ### Load ResNet model
+        self.efficientnet = torchvision.models.efficientnet_b4(weights=PT_weights)
+        
+        ### Freeze ResNet weights
+        if pretrained:
+            for param in self.efficientnet.parameters():
+                param.requires_grad = False
+
+        ### Head part
+        num_ftrs = self.efficientnet.classifier[1].in_features
+        self.efficientnet.classifier = torch.nn.Sequential(
+            torch.nn.Dropout(p=0.4),
+            torch.nn.Linear(num_ftrs, 256),
+            torch.nn.LayerNorm(256),
+            torch.nn.ReLU(),
+            torch.nn.Linear(256, 1),
+        )
+
+    def forward(self, input:torch.Tensor)->tuple:
+        """
+        TODO
+        """
+        x = self.efficientnet(input)
+        x = torch.nn.Sigmoid()(x)
+        return x
+
+
 def resNetBilberry(load_resNetBilberry_weights:bool=False, pretrained:bool=True) -> ResNetBilberry:
     """
-    TODO
+    Load ResNet50 model from torchvision
 
     Args:
         load_resNetBilberry_weights (bool, optional): _description_. Defaults to False.
@@ -59,31 +96,30 @@ def resNetBilberry(load_resNetBilberry_weights:bool=False, pretrained:bool=True)
         model.load_state_dict(torch.load(resNetBilberry_weights))
     return model
 
-if False:
-    def efficientNetBilberry(load_efficientNetBilberry:bool=False, pretrained:bool=True) -> EfficientNetBilberry:
-        """
-        TODO
+def efficientNetBilberry(load_efficientNetBilberry:bool=False, pretrained:bool=True) -> EfficientNetBilberry:
+    """
+    Load EfficientNetB4 model from torchvision.
 
-        Args:
-            load_efficientNetBilberry (bool, optional): _description_. Defaults to False.
-            pretrained (bool, optional): _description_. Defaults to True.
+    Args:
+        load_efficientNetBilberry (bool, optional): load finetuned weights. Defaults to False.
+        pretrained (bool, optional): load pretrained model on ImageNet. Defaults to True.
 
-        Returns:
-            EfficientNetBilberry: _description_
-        """
+    Returns:
+        EfficientNetBilberry: _description_
+    """
 
-        config = ConfigParser()
-        config.read("config.ini")
+    config = ConfigParser()
+    config.read("config.ini")
 
-        model = EfficientNetBilberry(pretrained)
-        if load_yoloweights:
-            efficientNetBilberry_weights = config.get("WEIGHTS", "efficientNetBilberry_weights")
-            model.load_state_dict(torch.load(efficientNetBilberry_weights))
-        return model
+    model = EfficientNetBilberry(pretrained)
+    if load_efficientNetBilberry:
+        efficientNetBilberry_weights = config.get("WEIGHTS", "efficientNetBilberry_weights")
+        model.load_state_dict(torch.load(efficientNetBilberry_weights))
+    return model
 
 
 if __name__ == "__main__":
-    model = resNetBilberry()
+    model = efficientNetBilberry()
 
     BATCH_SIZE = 64
     img_test = torch.rand(BATCH_SIZE, 3, 140, 140)
