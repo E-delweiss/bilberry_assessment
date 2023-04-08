@@ -1,4 +1,4 @@
-import logging
+import logging, os
 from datetime import datetime
 import glob
 
@@ -15,6 +15,10 @@ def create_logging(prefix:str):
         prefix (str): base name of logging.
     """
     assert type(prefix) is str, TypeError
+
+    ### Removing handlers
+    for handler in logging.root.handlers[:]:
+        logging.root.removeHandler(handler)
 
     ### Define format
     log_format = (
@@ -37,25 +41,27 @@ def create_logging(prefix:str):
     )
     logging.info("Model is {}.".format(prefix))
 
-def device(verbose:int=0)->torch.device:
+def set_device(device, verbose=0)->torch.device:
     """
     Set the device to 'cpu', 'cuda' or 'mps'.
 
     Args:
-        verbose (int, optional): Display infos. Defaults to 0.
-
-    Returns:
-        torch.device: hardware used.
+        None.
+    Return:
+        device : torch.device
     """
+    if device == 'cpu':
+        device = torch.device('cpu')
 
-    ### Choosing device between CPU, GPU or MPS
-    if torch.cuda.is_available():
-        device = torch.device('cuda')
-    elif torch.has_mps:
-        device=torch.device('mps')
-    else:
-        device=torch.device('cpu')
-    
+    if device == 'cuda' and torch.cuda.is_available():
+        torch.device('cuda')
+    elif device == 'cuda' and torch.cuda.is_available() is False:
+        logging.warning(f"Device {device} not available.")
+
+    if device == 'mps' and torch.has_mps:
+        logging.warning(f"May be some matrix operation currently not working well with mps.")
+        device = torch.device('mps')
+
     logging.info("Execute on {}".format(device))
     if verbose:
         print("\n------------------------------------")
@@ -65,7 +71,7 @@ def device(verbose:int=0)->torch.device:
     return device
 
 
-def pretty_print(batch:int, BATCH_SIZE:int, len_training_ds:int, current_loss:float, losses:dict, train_classes_acc:float):
+def pretty_print(batch:int, BATCH_SIZE:int, len_training_ds:int, current_loss:float, train_classes_acc:float):
     """
     Print all training infos for the current batch.
 
@@ -78,13 +84,9 @@ def pretty_print(batch:int, BATCH_SIZE:int, len_training_ds:int, current_loss:fl
             Len of the training dataset.
         current_loss (float)
             Current training loss.
-        losses (dict)
-            Dict of all the losses used to compute the main loss. It contains floats :
-            ['loss_xy', 'loss_wh', 'loss_conf_obj', 'loss_conf_noobj', 'loss_class'].
         train_classes_acc (float)
             Training class accuracy.
     """
-    BATCH_SIZE = 128
     if batch+1 <= len_training_ds//BATCH_SIZE:
         current_training_sample = (batch+1)*BATCH_SIZE
     else:
@@ -92,12 +94,6 @@ def pretty_print(batch:int, BATCH_SIZE:int, len_training_ds:int, current_loss:fl
 
     print(f"\n--- Image : {current_training_sample}/{len_training_ds}")
     print(f"* loss = {current_loss:.5f}")
-    print(f"* xy_coord training loss for this batch : {losses['loss_xy']:.5f}")
-    print(f"* wh_sizes training loss for this batch : {losses['loss_wh']:.5f}")
-    print(f"* confidence with object training loss for this batch : {losses['loss_conf_obj']:.5f}")
-    print(f"* confidence without object training loss for this batch : {losses['loss_conf_noobj']:.5f}")
-    print(f"* class training loss for this batch : {losses['loss_class']:.5f}")
-    print("\n")
     print(f"** Training class accuracy : {train_classes_acc*100:.2f}%")
 
 
@@ -113,50 +109,32 @@ def update_lr(current_epoch:int, optimizer:torch.optim):
         optimizer.defaults['lr'] = 0.0001
 
 
-def save_model(model, path:str, save:bool):
+def save_model(model, prefix:str, current_epoch:int, save:bool):
     """
-    Handle torch model saving.
+    Save Pytorch weights of the model. Set the name based on timeclock.
 
     Args:
-        model (): torch model
-        path (str): saving path .pt
-        save (bool): save the model or not
+        model (torch model)
+            Training model.
+        prefix (str)
+            Used to create the pt file name.
+        current_epoch (int)
+            Used to create the pt file name.
+        save (bool)
+            If False, set a warning in log file.
     """
     if save:
+        path = f"{prefix}_{current_epoch+1}epochs"
         tm = datetime.now()
         tm = tm.strftime("%d%m%Y_%Hh%M")
         path = path+'_'+tm+'.pt'
         torch.save(model.state_dict(), path)
-        logging.info("\nModel saved to {}.".format(path))
-        print("*"*5, "\nModel saved to {}.".format(path))
-    return
-
-def save_losses(train_loss:dict, val_loss:dict, model_name:str, save:bool):
-    """
-    Save training en validation losses to pickle files.
-
-    Args:
-        train_loss (dict)
-        val_loss (dict)
-        model_name (str)
-        save (bool)
-    """
-    if save:
-        tm = datetime.now()
-        tm = tm.strftime("%d%m%Y_%Hh%M")
-        train_path = f"train_results_{model_name}_{tm}.pkl"
-        val_path = f"val_results_{model_name}_{tm}.pkl"
-        
-        with open(train_path, 'wb') as pkl:
-            pickle.dump(train_loss, pkl)
-
-        with open(val_path, 'wb') as pkl:
-            pickle.dump(val_loss, pkl)
-        
-        logging.info("Training results saved to {}.".format(train_path))
-        logging.info("Validation results saved to {}.".format(val_path))
+        print("\n")
+        print("*"*5, "Model saved to {}.".format(path))
+        logging.info("\n")
+        logging.info("Model saved to {}.".format(path))
     else:
-        logging.warning("No saving has been requested for losses.")
+        logging.warning("No saving has been requested for model.")
     return
 
 def tqdm_fct(training_dataset):

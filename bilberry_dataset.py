@@ -11,11 +11,11 @@ import torchvision
 
 
 class BilberryDataset(torch.utils.data.Dataset):
-    def __init__(self, ratio:int, isValSet_bool:bool=None, isAugment_bool:bool=False, isNormalize_bool:bool=False)->tuple: 
+    def __init__(self, ratio:int, isValSet:bool=None, isAugment:bool=False, isNormalize:bool=False)->tuple: 
         super(BilberryDataset, self).__init__()
 
-        self.isNormalize_bool = isNormalize_bool
-        self.isAugment_bool = isAugment_bool
+        self.isNormalize = isNormalize
+        self.isAugment = isAugment
         self.ratio = ratio
 
         ### Load image paths
@@ -27,7 +27,7 @@ class BilberryDataset(torch.utils.data.Dataset):
         assert len_fields > 0, "Error in loading field images."
 
         ### Set validation dataset as 30% of the whole dataset
-        if isValSet_bool:
+        if isValSet:
             self.imgset_roads = rd.sample(imgset_roads, int(len_roads*0.3)) 
             self.imgset_fields = rd.sample(imgset_fields, int(len_fields*0.3))
         else :
@@ -43,11 +43,11 @@ class BilberryDataset(torch.utils.data.Dataset):
 
     def _preprocess(self, img_PIL:torch.Tensor)->torch.Tensor:
         ### Resizing
-        augment = torchvision.transforms.Resize((300,300)) ### ????
+        augment = torchvision.transforms.Resize(size=(250, 375))
         img_t = augment(img_PIL)
 
         ### Data augmentation
-        if self.isAugment_bool:
+        if self.isAugment:
             augment = torchvision.transforms.Compose([
                 torchvision.transforms.RandomCrop((224, 224)),
                 torchvision.transforms.RandomHorizontalFlip(p=0.5),
@@ -58,7 +58,7 @@ class BilberryDataset(torch.utils.data.Dataset):
             img_t = augment(img_t)
         
         ### Normalize data
-        if self.isNormalize_bool:
+        if self.isNormalize:
             mean, std = (0.4551, 0.4672, 0.4151), (0.2522, 0.2451, 0.2808)
             img_t = torchvision.transforms.Normalize(mean, std)(img_t)
 
@@ -94,14 +94,14 @@ class BilberryDataset(torch.utils.data.Dataset):
         image = self._preprocess(img_PIL)
 
         label = self.labelset[idx]
-        return image, torch.tensor(label).to(torch.int32)
+        return image, torch.tensor(label).to(torch.float32)
 
 
 def get_training_dataset(BATCH_SIZE=16, **kwargs):
     """
     Loads and maps the training split of the dataset using the custom dataset class. 
     """
-    dataset = BilberryDataset(isValSet_bool=False, **kwargs)
+    dataset = BilberryDataset(isValSet=False, **kwargs)
     dataloader = torch.utils.data.DataLoader(dataset, batch_size=BATCH_SIZE, shuffle=True)
     return dataloader
 
@@ -109,7 +109,7 @@ def get_validation_dataset(BATCH_SIZE=None, **kwargs):
     """
     Loads and maps the validation split of the datasetusing the custom dataset class. 
     """
-    dataset = BilberryDataset(isValSet_bool=True, **kwargs)
+    dataset = BilberryDataset(isValSet=True, **kwargs)
     if BATCH_SIZE is None:
         BATCH_SIZE = len(dataset)
     dataloader = torch.utils.data.DataLoader(dataset, batch_size=BATCH_SIZE, shuffle=True)
@@ -117,5 +117,5 @@ def get_validation_dataset(BATCH_SIZE=None, **kwargs):
 
 
 if __name__ == "__main__":
-    dataset = get_training_dataset(ratio=1, isAugment_bool=True, isNormalize_bool=False)
+    dataset = get_training_dataset(ratio=1, isAugment=True, isNormalize=False)
     print(next(iter(dataset))[0])
