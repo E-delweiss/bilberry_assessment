@@ -4,7 +4,8 @@ import logging
 from configparser import ConfigParser
 
 import torch
-from icecream import ic
+from icecream import install, ic
+install()
 
 import utils
 import modelBuilder
@@ -81,11 +82,10 @@ logging.info(f"[START] : {time_formatted}")
 
 ### Training / Validation loops
 ################################################################################
-batch_total_train_loss_list = []
-batch_train_losses_list = []
-batch_train_class_acc = []
+train_loss_list = []
+train_acc_list = []
 
-batch_val_class_acc = []
+val_acc_list = []
 
 start_time = datetime.datetime.now()
 for epoch in range(EPOCHS):
@@ -115,7 +115,7 @@ for epoch in range(EPOCHS):
         optimizer.step()
 
         ### Class accuracy
-        train_class_acc = class_acc(target, prediction)
+        train_acc = class_acc(target, prediction)
 
         ### Record loss
         current_loss = loss.item()
@@ -123,28 +123,27 @@ for epoch in range(EPOCHS):
 
         if batch == 0 or (batch+1)%FREQ == 0 or batch==len(train_dataloader.dataset)//BATCH_SIZE:
             # Recording the total loss
-            batch_total_train_loss_list.append(current_loss)
+            train_loss_list.append(current_loss)
 
-            # Recording class accuracy
-            batch_train_class_acc.append(train_class_acc)
+            # Recording training accuracy
+            train_acc_list.append(train_acc)
 
             # Pretty print
-            utils.pretty_print(batch, BATCH_SIZE, len(train_dataloader.dataset), current_loss, train_class_acc)
+            utils.pretty_print(batch, BATCH_SIZE, len(train_dataloader.dataset), current_loss, train_acc)
 
             ### Validation loop
-            ################################################################################
-            val_acc = validation_loop(model, val_dataloader, DO_VALIDATION) ###use model.device()
-            batch_val_class_acc.append(val_acc)
+            val_acc = validation_loop(model, val_dataloader, DO_VALIDATION)
+            val_acc_list.append(val_acc)
 
-            print(f"| Validation class acc : {val_acc*100:.2f}% \n\n")
+            print(f"** Validation accuracy : {val_acc*100:.2f}%")
 
-            
-            ### Write logs
+            # Write logs
             if batch == len(train_dataloader.dataset)//BATCH_SIZE:
                 print(f"Mean training loss for this epoch : {epochs_loss / len(train_dataloader):.5f} \n\n")
                 logging.info(f"Epoch {epoch+1}/{EPOCHS}")
                 logging.info(f"***** Training loss : {epochs_loss / len(train_dataloader):.5f}")
-                logging.info(f"***** Validation class acc : {val_acc*100:.2f}%")
+                logging.info(f"***** Training acc : {train_acc*100:.2f}%")
+                logging.info(f"***** Validation acc : {val_acc*100:.2f}%")
 
 
 
@@ -152,12 +151,11 @@ for epoch in range(EPOCHS):
 ### Saving results
 ################################################################################
 pickle_val_results = {
-"batch_val_class_acc":batch_val_class_acc
+"batch_val_class_acc":val_acc_list
 }
 
 pickle_train_results = {
-    "batch_train_losses_list" : batch_train_losses_list,
-    "batch_train_class_acc" : batch_train_class_acc,
+    "batch_train_class_acc":train_acc_list,
 }
 
 utils.save_model(model, PREFIX, epoch, SAVE_MODEL)

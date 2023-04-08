@@ -41,6 +41,7 @@ def create_logging(prefix:str):
     )
     logging.info("Model is {}.".format(prefix))
 
+
 def set_device(device, verbose=0)->torch.device:
     """
     Set the device to 'cpu', 'cuda' or 'mps'.
@@ -94,7 +95,7 @@ def pretty_print(batch:int, BATCH_SIZE:int, len_training_ds:int, current_loss:fl
 
     print(f"\n--- Image : {current_training_sample}/{len_training_ds}")
     print(f"* loss = {current_loss:.5f}")
-    print(f"** Training class accuracy : {train_classes_acc*100:.2f}%")
+    print(f"** Training accuracy : {train_classes_acc*100:.2f}%")
 
 
 def update_lr(current_epoch:int, optimizer:torch.optim):
@@ -136,6 +137,36 @@ def save_model(model, prefix:str, current_epoch:int, save:bool):
     else:
         logging.warning("No saving has been requested for model.")
     return
+
+
+def save_losses(train_loss:dict, val_loss:dict, model_name:str, save:bool):
+    """
+    Save training en validation losses to pickle files.
+
+    Args:
+        train_loss (dict)
+        val_loss (dict)
+        model_name (str)
+        save (bool)
+    """
+    if save:
+        tm = datetime.now()
+        tm = tm.strftime("%d%m%Y_%Hh%M")
+        train_path = f"train_results_{model_name}_{tm}.pkl"
+        val_path = f"val_results_{model_name}_{tm}.pkl"
+        
+        with open(train_path, 'wb') as pkl:
+            pickle.dump(train_loss, pkl)
+
+        with open(val_path, 'wb') as pkl:
+            pickle.dump(val_loss, pkl)
+        
+        logging.info("Training results saved to {}.".format(train_path))
+        logging.info("Validation results saved to {}.".format(val_path))
+    else:
+        logging.warning("No saving has been requested for losses.")
+    return
+
 
 def tqdm_fct(training_dataset):
     """

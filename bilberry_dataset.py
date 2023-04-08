@@ -34,6 +34,7 @@ class BilberryDataset(torch.utils.data.Dataset):
             self.imgset_roads = rd.sample(imgset_roads, int(len_roads*0.7)) 
             self.imgset_fields = rd.sample(imgset_fields, int(len_fields*0.7))
 
+        ### Roads will be 0 and fields 1
         self.label_roads = np.zeros(len(self.imgset_roads)).tolist()
         self.label_fields = np.ones(len(self.imgset_fields)).tolist()
         
@@ -117,5 +118,5 @@ def get_validation_dataset(BATCH_SIZE=None, **kwargs):
 
 
 if __name__ == "__main__":
-    dataset = get_training_dataset(ratio=1, isAugment=True, isNormalize=False)
-    print(next(iter(dataset))[0])
+    dataset = get_validation_dataset(ratio=1, isAugment=True, isNormalize=False)
+    print(type(next(iter(dataset))[0]))
