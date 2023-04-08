@@ -9,12 +9,12 @@ class ResNetBilberry(torch.nn.Module):
     def __init__(self, pretrained):
         super(ResNetBilberry, self).__init__()
         if pretrained:
-            PT_weights = torchvision.models.ResNet50_Weights.DEFAULT
+            PT_weights = torchvision.models.ResNet18_Weights.DEFAULT
         else:
             PT_weights = None
 
         ### Load ResNet model
-        self.resnet = torchvision.models.resnet50(weights=PT_weights)
+        self.resnet = torchvision.models.resnet18(weights=PT_weights)
 
         ### Freeze ResNet weights
         if pretrained:
@@ -24,6 +24,7 @@ class ResNetBilberry(torch.nn.Module):
         ### Head part
         num_ftrs = self.resnet.fc.in_features
         self.resnet.fc = torch.nn.Sequential(
+            torch.nn.Dropout(p=0.5),
             torch.nn.Linear(num_ftrs, 256),
             torch.nn.LayerNorm(256),
             torch.nn.ReLU(),
@@ -43,12 +44,12 @@ class EfficientNetBilberry(torch.nn.Module):
     def __init__(self, pretrained):
         super(EfficientNetBilberry, self).__init__()
         if pretrained:
-            PT_weights = torchvision.models.EfficientNet_B4_Weights.DEFAULT
+            PT_weights = torchvision.models.EfficientNet_B0_Weights.DEFAULT
         else:
             PT_weights = None
 
         ### Load ResNet model
-        self.efficientnet = torchvision.models.efficientnet_b4(weights=PT_weights)
+        self.efficientnet = torchvision.models.efficientnet_b0(weights=PT_weights)
         
         ### Freeze ResNet weights
         if pretrained:
@@ -58,7 +59,7 @@ class EfficientNetBilberry(torch.nn.Module):
         ### Head part
         num_ftrs = self.efficientnet.classifier[1].in_features
         self.efficientnet.classifier = torch.nn.Sequential(
-            torch.nn.Dropout(p=0.4),
+            torch.nn.Dropout(p=0.5),
             torch.nn.Linear(num_ftrs, 256),
             torch.nn.LayerNorm(256),
             torch.nn.ReLU(),
@@ -76,7 +77,7 @@ class EfficientNetBilberry(torch.nn.Module):
 
 def resNetBilberry(load_resNetBilberry_weights:bool=False, pretrained:bool=True) -> ResNetBilberry:
     """
-    Load ResNet50 model from torchvision
+    Load ResNet18 model from torchvision
 
     Args:
         load_resNetBilberry_weights (bool, optional): _description_. Defaults to False.
@@ -98,7 +99,7 @@ def resNetBilberry(load_resNetBilberry_weights:bool=False, pretrained:bool=True)
 
 def efficientNetBilberry(load_efficientNetBilberry:bool=False, pretrained:bool=True) -> EfficientNetBilberry:
     """
-    Load EfficientNetB4 model from torchvision.
+    Load EfficientNetB0 model from torchvision.
 
     Args:
         load_efficientNetBilberry (bool, optional): load finetuned weights. Defaults to False.
