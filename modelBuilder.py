@@ -35,7 +35,7 @@ class ResNetBilberry(torch.nn.Module):
             torch.nn.Linear(256, 1),
         )
 
-    def forward(self, input:torch.Tensor)->tuple:
+    def forward(self, input:torch.Tensor):
         """
         TODO
         """
@@ -70,7 +70,7 @@ class EfficientNetBilberry(torch.nn.Module):
             torch.nn.Linear(256, 1),
         )
 
-    def forward(self, input:torch.Tensor)->tuple:
+    def forward(self, input:torch.Tensor):
         """
         TODO
         """
@@ -129,6 +129,7 @@ if __name__ == "__main__":
     model = ResNetBilberry(pretrained=True)
     # model = EfficientNetBilberry(pretrained=True)
 
-    BATCH_SIZE = 64
+    BATCH_SIZE = 1
     img_test = torch.rand(BATCH_SIZE, 3, 140, 140)
-    summary(model, input_size = img_test.shape)
+    print(model(img_test))
+    # summary(model, input_size = img_test.shape)
