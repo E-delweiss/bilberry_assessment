@@ -41,26 +41,27 @@ def validation_loop(model, validation_dataset, criterion, DO_VALIDATION:bool)->f
                 ### prediction
                 prediction = model(img).squeeze(1)
 
-                ### loss
+                ### loss 
                 loss = criterion(prediction, target)
-            
+                batch_loss.append(loss.item())
+
             ### Compute and save accuracy for each batch
             acc = metrics.class_acc(target, prediction)
             batch_acc.append(acc)
-
-            ### Save loss
-            loss = batch_loss.append(loss.item())
+            
 
         ### Compute validation accuracy and loss
         val_acc = np.mean(batch_acc)
         val_loss = np.mean(batch_loss)
+        confmatrix_dict = metrics.metrics(target, prediction)
 
     else:
         logging.warning(f"Validation loop disabled. Validation accuracy and loss are set to 999")
         val_acc = 999
         val_loss = 999
+        confmatrix_dict = {}
 
-    return val_loss, val_acc
+    return val_loss, val_acc, confmatrix_dict
 
 
 

@@ -2,6 +2,7 @@ import os, sys
 import glob
 import pandas as pd
 import random as rd
+import logging
 
 import numpy as np
 import PIL
@@ -11,10 +12,9 @@ import torchvision
 
 
 class BilberryDataset(torch.utils.data.Dataset):
-    def __init__(self, ratio:int, isValSet:bool=None, isAugment:bool=False, isNormalize:bool=False)->tuple: 
+    def __init__(self, ratio:int, isValSet:bool=None, isAugment:bool=False)->tuple: 
         super(BilberryDataset, self).__init__()
 
-        self.isNormalize = isNormalize
         self.isAugment = isAugment
         self.ratio = ratio
 
@@ -41,34 +41,17 @@ class BilberryDataset(torch.utils.data.Dataset):
         self.labelset = self.label_roads + self.label_fields
         self.imgset = self.imgset_roads + self.imgset_fields
 
-        ### Compute mean / std for normalization
-        self.mean, self.std = normalizer()
-
-
-    def _normalizer(self):
-        transform = torchvision.transforms.Compose([
-            torchvision.transforms.Resize((224,224)),
-            torchvision.transforms.ToTensor()
-        ])
-        data_PIL = [Image.open(img).convert('RGB') for img in self.imgset]
-        data_tensor = [transform(img_PIL).unsqueeze(0) for img_PIL in data_PIL]
-        data_tensor = torch.cat(data_tensor, dim=0)
-        torch.mean(data_tensor, dim=[0,2,3]), torch.std(data_tensor, dim=[0,2,3])
-        return mean, std
-
 
     def _preprocess(self, img_PIL:torch.Tensor)->torch.Tensor:
         ### Resizing
         img_t = torchvision.transforms.Resize(size=(250, 375))(img_PIL)
-        # img_t = torchvision.transforms.Resize(size=(300, 300))(img_PIL)
 
         ### Data augmentation
         if self.isAugment:
             augment = torchvision.transforms.Compose([
                 torchvision.transforms.RandomCrop((224, 224)),
                 torchvision.transforms.RandomHorizontalFlip(p=0.5),
-                torchvision.transforms.ColorJitter(brightness=[0.5,2], contrast=[0.5,2.5], saturation=[0.5,1]),
-                torchvision.transforms.RandomAdjustSharpness(5, p=0.5),
+                torchvision.transforms.ColorJitter(brightness=[0.5,1.5], contrast=[0.5,1.5], saturation=[0.5,1.5]),
                 torchvision.transforms.ToTensor()
                 ])
             img_t = augment(img_t)
@@ -79,10 +62,6 @@ class BilberryDataset(torch.utils.data.Dataset):
                 torchvision.transforms.ToTensor()
             ])
             img_t = transform(img_t)
-
-        ### Normalize data
-        if self.isNormalize:
-            img_t = torchvision.transforms.Normalize(self.mean, self.std)(img_t)
 
         return img_t
 
@@ -111,11 +90,9 @@ class BilberryDataset(torch.utils.data.Dataset):
             img_path = self.imgset[idx]
             label = self.labelset[idx]
 
-        img_path = self.imgset[idx]
         img_PIL = PIL.Image.open(img_path).convert('RGB')
         image = self._preprocess(img_PIL)
 
-        label = self.labelset[idx]
         return image, torch.tensor(label).to(torch.float32)
 
 

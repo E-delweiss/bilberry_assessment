@@ -9,24 +9,28 @@ class ResNetBilberry(torch.nn.Module):
     def __init__(self, pretrained):
         super(ResNetBilberry, self).__init__()
         if pretrained:
-            PT_weights = torchvision.models.ResNet18_Weights.DEFAULT
+            PT_weights = torchvision.models.ResNet34_Weights.DEFAULT
         else:
             PT_weights = None
 
         ### Load ResNet model
-        self.resnet = torchvision.models.resnet18(weights=PT_weights)
+        self.resnet = torchvision.models.resnet34(weights=PT_weights)
 
         ### Freeze ResNet weights
+        it = 0
         if pretrained:
             for param in self.resnet.parameters():
                 param.requires_grad = False
+                if it > 100:
+                    break
+                it += 1
 
-        ### Head part
+        ## Head part
         num_ftrs = self.resnet.fc.in_features
         self.resnet.fc = torch.nn.Sequential(
-            torch.nn.Dropout(p=0.5),
-            torch.nn.Linear(num_ftrs, 256),
-            torch.nn.LayerNorm(256),
+            # torch.nn.Dropout(p=0.5),
+            torch.nn.Linear(num_ftrs, num_ftrs//2),
+            torch.nn.LayerNorm(num_ftrs//2),
             torch.nn.ReLU(),
             torch.nn.Linear(256, 1),
         )
@@ -59,7 +63,7 @@ class EfficientNetBilberry(torch.nn.Module):
         ### Head part
         num_ftrs = self.efficientnet.classifier[1].in_features
         self.efficientnet.classifier = torch.nn.Sequential(
-            torch.nn.Dropout(p=0.5),
+            torch.nn.Dropout(p=0.7),
             torch.nn.Linear(num_ftrs, 256),
             torch.nn.LayerNorm(256),
             torch.nn.ReLU(),
@@ -94,6 +98,7 @@ def resNetBilberry(load_resNetBilberry_weights:bool=False, pretrained:bool=True)
 
     if load_resNetBilberry_weights:
         resNetBilberry_weights = config.get("WEIGHTS", "resNetBilberry_weights")
+        print(f"Loading {resNetBilberry_weights} weights...")
         model.load_state_dict(torch.load(resNetBilberry_weights))
     return model
 
@@ -120,7 +125,7 @@ def efficientNetBilberry(load_efficientNetBilberry:bool=False, pretrained:bool=T
 
 
 if __name__ == "__main__":
-    model = efficientNetBilberry()
+    model = ResNetBilberry(pretrained=True)
 
     BATCH_SIZE = 64
     img_test = torch.rand(BATCH_SIZE, 3, 140, 140)

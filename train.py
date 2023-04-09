@@ -3,6 +3,7 @@ import datetime
 import logging
 from configparser import ConfigParser
 
+from torch.utils.tensorboard import SummaryWriter
 import torch
 from icecream import install, ic
 install()
@@ -10,7 +11,7 @@ install()
 import utils
 import modelBuilder
 from bilberry_dataset import get_training_dataset, get_validation_dataset
-from metrics import class_acc
+from metrics import class_acc, metrics
 from validation import validation_loop
 
 ### Set time format
@@ -43,9 +44,9 @@ LR_SCHEDULER = config.getboolean('TRAINING', 'lr_scheduler')
 PREFIX = config.get('MODEL', 'model_name')
 PRETRAINED = config.getboolean('MODEL', 'pretrained')
 
-isNormalize_trainset = config.getboolean('DATASET', 'isNormalize_trainset')
+TRAIN_RATIO = config.getint('DATASET', 'train_ratio')
+VAL_RATIO = config.getint('DATASET', 'val_ratio')
 isAugment_trainset = config.getboolean('DATASET', 'isAugment_trainset')
-isNormalize_valset = config.getboolean('DATASET', 'isNormalize_valset')
 isAugment_valset = config.getboolean('DATASET', 'isAugment_valset')
 
 FREQ = config.getint('PRINTING', 'freq')
@@ -61,14 +62,15 @@ model = model.to(device)
 optimizer = torch.optim.Adam(params=model.parameters(), lr=learning_rate, weight_decay=WEIGHT_DECAY)
 criterion = torch.nn.BCELoss()
 
-train_dataloader = get_training_dataset(BATCH_SIZE, ratio=1, isNormalize=isNormalize_trainset, isAugment=isAugment_trainset)
-val_dataloader = get_validation_dataset(ratio=1, isNormalize=isNormalize_valset, isAugment=isAugment_valset)
+train_dataloader = get_training_dataset(BATCH_SIZE, ratio=TRAIN_RATIO, isAugment=isAugment_trainset)
+val_dataloader = get_validation_dataset(ratio=VAL_RATIO, isAugment=isAugment_valset)
 
 ### Initialize log file
 ################################################################################
 print(f"\n\n[Training on] : {str(device).upper()}")
 print(f"Learning rate : {optimizer.defaults['lr']}")
 
+writer = SummaryWriter(log_dir=f'runs/{PREFIX}_RUN_{time_formatted}')
 utils.create_logging(prefix=PREFIX)
 logging.info(f"Pretrained is {PRETRAINED}")
 logging.info(f"Learning rate = {learning_rate}")
@@ -90,9 +92,9 @@ train_acc_batch = []
 val_acc_epoch = []
 val_acc_batch = []
 
+it = 0 
 start_time = datetime.datetime.now()
 for epoch in range(EPOCHS):
-    # utils.update_lr(epoch, optimizer, LR_SCHEDULER)
     epochs_loss = 0.
     
     print(" "*5 + f"EPOCH {epoch+1}/{EPOCHS}")
@@ -110,7 +112,7 @@ for epoch in range(EPOCHS):
 
         ### compute loss in the current batch
         loss = criterion(prediction, target)
-    
+
         ### compute gradients
         loss.backward()
         
@@ -125,22 +127,22 @@ for epoch in range(EPOCHS):
         epochs_loss += current_loss
 
         if batch == 0 or (batch+1)%FREQ == 0 or batch==len(train_dataloader.dataset)//BATCH_SIZE:
-            # Recording the total loss
-            train_loss_list.append(current_loss)
-
-            # Recording training accuracy
-            train_acc_list.append(train_acc)
+            # Recording training metrics
+            writer.add_scalars('variables', {f"Loss/train" : current_loss}, it)
+            writer.add_scalars('variables', {f"Acc/train" : train_acc}, it)
 
             # Pretty print
             utils.pretty_print(batch, BATCH_SIZE, len(train_dataloader.dataset), current_loss, train_acc)
 
             ### Validation loop
-            val_loss, val_acc = validation_loop(model, val_dataloader, criterion, DO_VALIDATION)
-            val_acc_list.append(val_acc)
+            val_loss, val_acc, confmatrix_dict = validation_loop(model, val_dataloader, criterion, DO_VALIDATION)
+            writer.add_scalars('variables', {f"Loss/val" : val_loss}, it)
+            writer.add_scalars('variables', {f"Acc/val" : val_acc}, it)
+            writer.add_scalars('variables', {f"F1/val" : confmatrix_dict["F1_score"]}, it)
 
             print(f"** Validation loss : {val_loss:.5f}")
             print(f"** Validation accuracy : {val_acc*100:.2f}%")
-
+            it += 1
             # Write logs
             if batch == len(train_dataloader.dataset)//BATCH_SIZE:
                 print(f"Mean training loss for this epoch : {epochs_loss / len(train_dataloader):.5f} \n\n")
@@ -155,16 +157,7 @@ for epoch in range(EPOCHS):
 
 ### Saving results
 ################################################################################
-pickle_val_results = {
-"batch_val_class_acc":val_acc_list
-}
-
-pickle_train_results = {
-    "batch_train_class_acc":train_acc_list,
-}
-
 utils.save_model(model, PREFIX, epoch, SAVE_MODEL)
-utils.save_losses(pickle_train_results, pickle_val_results, PREFIX, SAVE_LOSS)
 
 end_time = datetime.datetime.now()
 logging.info('Time duration: {}.'.format(end_time - start_time))
