@@ -57,7 +57,8 @@ SAVE_LOSS = config.getboolean('SAVING', 'save_loss')
 ################################################################################
 device = utils.set_device(DEVICE, verbose=0)
 
-model = modelBuilder.resNetBilberry(pretrained=PRETRAINED)
+# model = modelBuilder.resNetBilberry(pretrained=PRETRAINED)
+model = modelBuilder.efficientNetBilberry(pretrained=PRETRAINED)
 model = model.to(device)
 optimizer = torch.optim.Adam(params=model.parameters(), lr=learning_rate, weight_decay=WEIGHT_DECAY)
 criterion = torch.nn.BCELoss()

@@ -1,0 +1,376 @@
+09/04/2023 16:19:09 ::INFO:: Model is EfficientNetB3_Bilberry.
+09/04/2023 16:19:09 ::INFO:: Pretrained is True
+09/04/2023 16:19:09 ::INFO:: Learning rate = 0.001
+09/04/2023 16:19:09 ::INFO:: Batch size = 32
+09/04/2023 16:19:09 ::INFO:: Using optimizer : Adam (
+Parameter Group 0
+    amsgrad: False
+    betas: (0.9, 0.999)
+    capturable: False
+    differentiable: False
+    eps: 1e-08
+    foreach: None
+    fused: False
+    lr: 0.001
+    maximize: False
+    weight_decay: 0.0005
+)
+09/04/2023 16:19:09 ::INFO:: Lr Scheduler : None
+09/04/2023 16:19:09 ::INFO:: 
+09/04/2023 16:19:09 ::INFO:: Start training
+09/04/2023 16:19:09 ::INFO:: [START] : 2023-04-09 15:19:09
+09/04/2023 16:19:10 ::INFO:: Start validation loop
+09/04/2023 16:19:14 ::INFO:: Start validation loop
+09/04/2023 16:19:16 ::INFO:: Epoch 1/50
+09/04/2023 16:19:16 ::INFO:: ** Training loss : 0.64577
+09/04/2023 16:19:16 ::INFO:: ** Validation loss : 0.32838
+09/04/2023 16:19:16 ::INFO:: ***** Training acc : 63.64%
+09/04/2023 16:19:16 ::INFO:: ***** Validation acc : 91.11%
+09/04/2023 16:19:17 ::INFO:: Start validation loop
+09/04/2023 16:19:22 ::INFO:: Start validation loop
+09/04/2023 16:19:24 ::INFO:: Epoch 2/50
+09/04/2023 16:19:24 ::INFO:: ** Training loss : 0.37371
+09/04/2023 16:19:24 ::INFO:: ** Validation loss : 0.17929
+09/04/2023 16:19:24 ::INFO:: ***** Training acc : 81.82%
+09/04/2023 16:19:24 ::INFO:: ***** Validation acc : 97.78%
+09/04/2023 16:19:25 ::INFO:: Start validation loop
+09/04/2023 16:19:29 ::INFO:: Start validation loop
+09/04/2023 16:19:31 ::INFO:: Epoch 3/50
+09/04/2023 16:19:31 ::INFO:: ** Training loss : 0.45457
+09/04/2023 16:19:31 ::INFO:: ** Validation loss : 0.10412
+09/04/2023 16:19:31 ::INFO:: ***** Training acc : 36.36%
+09/04/2023 16:19:31 ::INFO:: ***** Validation acc : 100.00%
+09/04/2023 16:19:32 ::INFO:: Start validation loop
+09/04/2023 16:19:36 ::INFO:: Start validation loop
+09/04/2023 16:19:38 ::INFO:: Epoch 4/50
+09/04/2023 16:19:38 ::INFO:: ** Training loss : 0.31291
+09/04/2023 16:19:38 ::INFO:: ** Validation loss : 0.14993
+09/04/2023 16:19:38 ::INFO:: ***** Training acc : 90.91%
+09/04/2023 16:19:38 ::INFO:: ***** Validation acc : 95.56%
+09/04/2023 16:19:39 ::INFO:: Start validation loop
+09/04/2023 16:19:43 ::INFO:: Start validation loop
+09/04/2023 16:19:45 ::INFO:: Epoch 5/50
+09/04/2023 16:19:45 ::INFO:: ** Training loss : 0.12828
+09/04/2023 16:19:45 ::INFO:: ** Validation loss : 0.11160
+09/04/2023 16:19:45 ::INFO:: ***** Training acc : 90.91%
+09/04/2023 16:19:45 ::INFO:: ***** Validation acc : 95.56%
+09/04/2023 16:19:46 ::INFO:: Start validation loop
+09/04/2023 16:19:50 ::INFO:: Start validation loop
+09/04/2023 16:19:52 ::INFO:: Epoch 6/50
+09/04/2023 16:19:52 ::INFO:: ** Training loss : 0.19169
+09/04/2023 16:19:52 ::INFO:: ** Validation loss : 0.10109
+09/04/2023 16:19:52 ::INFO:: ***** Training acc : 100.00%
+09/04/2023 16:19:52 ::INFO:: ***** Validation acc : 93.33%
+09/04/2023 16:19:53 ::INFO:: Start validation loop
+09/04/2023 16:19:56 ::INFO:: Start validation loop
+09/04/2023 16:19:58 ::INFO:: Epoch 7/50
+09/04/2023 16:19:58 ::INFO:: ** Training loss : 0.14270
+09/04/2023 16:19:58 ::INFO:: ** Validation loss : 0.10498
+09/04/2023 16:19:58 ::INFO:: ***** Training acc : 90.91%
+09/04/2023 16:19:58 ::INFO:: ***** Validation acc : 93.33%
+09/04/2023 16:19:59 ::INFO:: Start validation loop
+09/04/2023 16:20:03 ::INFO:: Start validation loop
+09/04/2023 16:20:04 ::INFO:: Epoch 8/50
+09/04/2023 16:20:04 ::INFO:: ** Training loss : 0.11775
+09/04/2023 16:20:04 ::INFO:: ** Validation loss : 0.09422
+09/04/2023 16:20:04 ::INFO:: ***** Training acc : 100.00%
+09/04/2023 16:20:04 ::INFO:: ***** Validation acc : 95.56%
+09/04/2023 16:20:05 ::INFO:: Start validation loop
+09/04/2023 16:20:09 ::INFO:: Start validation loop
+09/04/2023 16:20:10 ::INFO:: Epoch 9/50
+09/04/2023 16:20:10 ::INFO:: ** Training loss : 0.11109
+09/04/2023 16:20:10 ::INFO:: ** Validation loss : 0.09230
+09/04/2023 16:20:10 ::INFO:: ***** Training acc : 100.00%
+09/04/2023 16:20:10 ::INFO:: ***** Validation acc : 95.56%
+09/04/2023 16:20:11 ::INFO:: Start validation loop
+09/04/2023 16:20:15 ::INFO:: Start validation loop
+09/04/2023 16:20:17 ::INFO:: Epoch 10/50
+09/04/2023 16:20:17 ::INFO:: ** Training loss : 0.14705
+09/04/2023 16:20:17 ::INFO:: ** Validation loss : 0.09751
+09/04/2023 16:20:17 ::INFO:: ***** Training acc : 100.00%
+09/04/2023 16:20:17 ::INFO:: ***** Validation acc : 95.56%
+09/04/2023 16:20:18 ::INFO:: Start validation loop
+09/04/2023 16:20:22 ::INFO:: Start validation loop
+09/04/2023 16:20:23 ::INFO:: Epoch 11/50
+09/04/2023 16:20:23 ::INFO:: ** Training loss : 0.15420
+09/04/2023 16:20:23 ::INFO:: ** Validation loss : 0.08427
+09/04/2023 16:20:23 ::INFO:: ***** Training acc : 90.91%
+09/04/2023 16:20:23 ::INFO:: ***** Validation acc : 95.56%
+09/04/2023 16:20:25 ::INFO:: Start validation loop
+09/04/2023 16:20:28 ::INFO:: Start validation loop
+09/04/2023 16:20:30 ::INFO:: Epoch 12/50
+09/04/2023 16:20:30 ::INFO:: ** Training loss : 0.10880
+09/04/2023 16:20:30 ::INFO:: ** Validation loss : 0.11279
+09/04/2023 16:20:30 ::INFO:: ***** Training acc : 90.91%
+09/04/2023 16:20:30 ::INFO:: ***** Validation acc : 93.33%
+09/04/2023 16:20:31 ::INFO:: Start validation loop
+09/04/2023 16:20:35 ::INFO:: Start validation loop
+09/04/2023 16:20:37 ::INFO:: Epoch 13/50
+09/04/2023 16:20:37 ::INFO:: ** Training loss : 0.09754
+09/04/2023 16:20:37 ::INFO:: ** Validation loss : 0.14606
+09/04/2023 16:20:37 ::INFO:: ***** Training acc : 90.91%
+09/04/2023 16:20:37 ::INFO:: ***** Validation acc : 95.56%
+09/04/2023 16:20:38 ::INFO:: Start validation loop
+09/04/2023 16:20:42 ::INFO:: Start validation loop
+09/04/2023 16:20:43 ::INFO:: Epoch 14/50
+09/04/2023 16:20:43 ::INFO:: ** Training loss : 0.08302
+09/04/2023 16:20:43 ::INFO:: ** Validation loss : 0.04444
+09/04/2023 16:20:43 ::INFO:: ***** Training acc : 90.91%
+09/04/2023 16:20:43 ::INFO:: ***** Validation acc : 97.78%
+09/04/2023 16:20:44 ::INFO:: Start validation loop
+09/04/2023 16:20:48 ::INFO:: Start validation loop
+09/04/2023 16:20:50 ::INFO:: Epoch 15/50
+09/04/2023 16:20:50 ::INFO:: ** Training loss : 0.12657
+09/04/2023 16:20:50 ::INFO:: ** Validation loss : 0.09460
+09/04/2023 16:20:50 ::INFO:: ***** Training acc : 90.91%
+09/04/2023 16:20:50 ::INFO:: ***** Validation acc : 93.33%
+09/04/2023 16:20:51 ::INFO:: Start validation loop
+09/04/2023 16:20:55 ::INFO:: Start validation loop
+09/04/2023 16:20:57 ::INFO:: Epoch 16/50
+09/04/2023 16:20:57 ::INFO:: ** Training loss : 0.11136
+09/04/2023 16:20:57 ::INFO:: ** Validation loss : 0.09035
+09/04/2023 16:20:57 ::INFO:: ***** Training acc : 90.91%
+09/04/2023 16:20:57 ::INFO:: ***** Validation acc : 97.78%
+09/04/2023 16:20:58 ::INFO:: Start validation loop
+09/04/2023 16:21:03 ::INFO:: Start validation loop
+09/04/2023 16:21:05 ::INFO:: Epoch 17/50
+09/04/2023 16:21:05 ::INFO:: ** Training loss : 0.11615
+09/04/2023 16:21:05 ::INFO:: ** Validation loss : 0.05912
+09/04/2023 16:21:05 ::INFO:: ***** Training acc : 100.00%
+09/04/2023 16:21:05 ::INFO:: ***** Validation acc : 97.78%
+09/04/2023 16:21:06 ::INFO:: Start validation loop
+09/04/2023 16:21:10 ::INFO:: Start validation loop
+09/04/2023 16:21:12 ::INFO:: Epoch 18/50
+09/04/2023 16:21:12 ::INFO:: ** Training loss : 0.11780
+09/04/2023 16:21:12 ::INFO:: ** Validation loss : 0.02243
+09/04/2023 16:21:12 ::INFO:: ***** Training acc : 81.82%
+09/04/2023 16:21:12 ::INFO:: ***** Validation acc : 100.00%
+09/04/2023 16:21:13 ::INFO:: Start validation loop
+09/04/2023 16:21:18 ::INFO:: Start validation loop
+09/04/2023 16:21:20 ::INFO:: Epoch 19/50
+09/04/2023 16:21:20 ::INFO:: ** Training loss : 0.04990
+09/04/2023 16:21:20 ::INFO:: ** Validation loss : 0.03591
+09/04/2023 16:21:20 ::INFO:: ***** Training acc : 100.00%
+09/04/2023 16:21:20 ::INFO:: ***** Validation acc : 97.78%
+09/04/2023 16:21:21 ::INFO:: Start validation loop
+09/04/2023 16:21:25 ::INFO:: Start validation loop
+09/04/2023 16:21:27 ::INFO:: Epoch 20/50
+09/04/2023 16:21:27 ::INFO:: ** Training loss : 0.15518
+09/04/2023 16:21:27 ::INFO:: ** Validation loss : 0.03763
+09/04/2023 16:21:27 ::INFO:: ***** Training acc : 90.91%
+09/04/2023 16:21:27 ::INFO:: ***** Validation acc : 100.00%
+09/04/2023 16:21:28 ::INFO:: Start validation loop
+09/04/2023 16:21:32 ::INFO:: Start validation loop
+09/04/2023 16:21:34 ::INFO:: Epoch 21/50
+09/04/2023 16:21:34 ::INFO:: ** Training loss : 0.04967
+09/04/2023 16:21:34 ::INFO:: ** Validation loss : 0.04070
+09/04/2023 16:21:34 ::INFO:: ***** Training acc : 100.00%
+09/04/2023 16:21:34 ::INFO:: ***** Validation acc : 100.00%
+09/04/2023 16:21:35 ::INFO:: Start validation loop
+09/04/2023 16:21:39 ::INFO:: Start validation loop
+09/04/2023 16:21:41 ::INFO:: Epoch 22/50
+09/04/2023 16:21:41 ::INFO:: ** Training loss : 0.14261
+09/04/2023 16:21:41 ::INFO:: ** Validation loss : 0.09642
+09/04/2023 16:21:41 ::INFO:: ***** Training acc : 90.91%
+09/04/2023 16:21:41 ::INFO:: ***** Validation acc : 95.56%
+09/04/2023 16:21:42 ::INFO:: Start validation loop
+09/04/2023 16:21:45 ::INFO:: Start validation loop
+09/04/2023 16:21:47 ::INFO:: Epoch 23/50
+09/04/2023 16:21:47 ::INFO:: ** Training loss : 0.11265
+09/04/2023 16:21:47 ::INFO:: ** Validation loss : 0.04964
+09/04/2023 16:21:47 ::INFO:: ***** Training acc : 90.91%
+09/04/2023 16:21:47 ::INFO:: ***** Validation acc : 97.78%
+09/04/2023 16:21:48 ::INFO:: Start validation loop
+09/04/2023 16:21:52 ::INFO:: Start validation loop
+09/04/2023 16:21:54 ::INFO:: Epoch 24/50
+09/04/2023 16:21:54 ::INFO:: ** Training loss : 0.05398
+09/04/2023 16:21:54 ::INFO:: ** Validation loss : 0.11266
+09/04/2023 16:21:54 ::INFO:: ***** Training acc : 100.00%
+09/04/2023 16:21:54 ::INFO:: ***** Validation acc : 93.33%
+09/04/2023 16:21:55 ::INFO:: Start validation loop
+09/04/2023 16:21:59 ::INFO:: Start validation loop
+09/04/2023 16:22:01 ::INFO:: Epoch 25/50
+09/04/2023 16:22:01 ::INFO:: ** Training loss : 0.21024
+09/04/2023 16:22:01 ::INFO:: ** Validation loss : 0.12771
+09/04/2023 16:22:01 ::INFO:: ***** Training acc : 63.64%
+09/04/2023 16:22:01 ::INFO:: ***** Validation acc : 95.56%
+09/04/2023 16:22:02 ::INFO:: Start validation loop
+09/04/2023 16:22:06 ::INFO:: Start validation loop
+09/04/2023 16:22:08 ::INFO:: Epoch 26/50
+09/04/2023 16:22:08 ::INFO:: ** Training loss : 0.04202
+09/04/2023 16:22:08 ::INFO:: ** Validation loss : 0.04306
+09/04/2023 16:22:08 ::INFO:: ***** Training acc : 100.00%
+09/04/2023 16:22:08 ::INFO:: ***** Validation acc : 97.78%
+09/04/2023 16:22:09 ::INFO:: Start validation loop
+09/04/2023 16:22:13 ::INFO:: Start validation loop
+09/04/2023 16:22:15 ::INFO:: Epoch 27/50
+09/04/2023 16:22:15 ::INFO:: ** Training loss : 0.04123
+09/04/2023 16:22:15 ::INFO:: ** Validation loss : 0.02129
+09/04/2023 16:22:15 ::INFO:: ***** Training acc : 100.00%
+09/04/2023 16:22:15 ::INFO:: ***** Validation acc : 100.00%
+09/04/2023 16:22:16 ::INFO:: Start validation loop
+09/04/2023 16:22:21 ::INFO:: Start validation loop
+09/04/2023 16:22:23 ::INFO:: Epoch 28/50
+09/04/2023 16:22:23 ::INFO:: ** Training loss : 0.05970
+09/04/2023 16:22:23 ::INFO:: ** Validation loss : 0.07816
+09/04/2023 16:22:23 ::INFO:: ***** Training acc : 100.00%
+09/04/2023 16:22:23 ::INFO:: ***** Validation acc : 95.56%
+09/04/2023 16:22:24 ::INFO:: Start validation loop
+09/04/2023 16:22:28 ::INFO:: Start validation loop
+09/04/2023 16:22:30 ::INFO:: Epoch 29/50
+09/04/2023 16:22:30 ::INFO:: ** Training loss : 0.10555
+09/04/2023 16:22:30 ::INFO:: ** Validation loss : 0.01982
+09/04/2023 16:22:30 ::INFO:: ***** Training acc : 100.00%
+09/04/2023 16:22:30 ::INFO:: ***** Validation acc : 100.00%
+09/04/2023 16:22:31 ::INFO:: Start validation loop
+09/04/2023 16:22:35 ::INFO:: Start validation loop
+09/04/2023 16:22:37 ::INFO:: Epoch 30/50
+09/04/2023 16:22:37 ::INFO:: ** Training loss : 0.09202
+09/04/2023 16:22:37 ::INFO:: ** Validation loss : 0.03960
+09/04/2023 16:22:37 ::INFO:: ***** Training acc : 90.91%
+09/04/2023 16:22:37 ::INFO:: ***** Validation acc : 97.78%
+09/04/2023 16:22:38 ::INFO:: Start validation loop
+09/04/2023 16:22:42 ::INFO:: Start validation loop
+09/04/2023 16:22:44 ::INFO:: Epoch 31/50
+09/04/2023 16:22:44 ::INFO:: ** Training loss : 0.14254
+09/04/2023 16:22:44 ::INFO:: ** Validation loss : 0.01230
+09/04/2023 16:22:44 ::INFO:: ***** Training acc : 81.82%
+09/04/2023 16:22:44 ::INFO:: ***** Validation acc : 100.00%
+09/04/2023 16:22:45 ::INFO:: Start validation loop
+09/04/2023 16:22:49 ::INFO:: Start validation loop
+09/04/2023 16:22:51 ::INFO:: Epoch 32/50
+09/04/2023 16:22:51 ::INFO:: ** Training loss : 0.12985
+09/04/2023 16:22:51 ::INFO:: ** Validation loss : 0.12140
+09/04/2023 16:22:51 ::INFO:: ***** Training acc : 90.91%
+09/04/2023 16:22:51 ::INFO:: ***** Validation acc : 93.33%
+09/04/2023 16:22:52 ::INFO:: Start validation loop
+09/04/2023 16:22:56 ::INFO:: Start validation loop
+09/04/2023 16:22:57 ::INFO:: Epoch 33/50
+09/04/2023 16:22:57 ::INFO:: ** Training loss : 0.10572
+09/04/2023 16:22:57 ::INFO:: ** Validation loss : 0.02818
+09/04/2023 16:22:57 ::INFO:: ***** Training acc : 100.00%
+09/04/2023 16:22:57 ::INFO:: ***** Validation acc : 97.78%
+09/04/2023 16:22:58 ::INFO:: Start validation loop
+09/04/2023 16:23:02 ::INFO:: Start validation loop
+09/04/2023 16:23:04 ::INFO:: Epoch 34/50
+09/04/2023 16:23:04 ::INFO:: ** Training loss : 0.05799
+09/04/2023 16:23:04 ::INFO:: ** Validation loss : 0.00585
+09/04/2023 16:23:04 ::INFO:: ***** Training acc : 100.00%
+09/04/2023 16:23:04 ::INFO:: ***** Validation acc : 100.00%
+09/04/2023 16:23:05 ::INFO:: Start validation loop
+09/04/2023 16:23:10 ::INFO:: Start validation loop
+09/04/2023 16:23:11 ::INFO:: Epoch 35/50
+09/04/2023 16:23:11 ::INFO:: ** Training loss : 0.16517
+09/04/2023 16:23:11 ::INFO:: ** Validation loss : 0.12688
+09/04/2023 16:23:11 ::INFO:: ***** Training acc : 90.91%
+09/04/2023 16:23:11 ::INFO:: ***** Validation acc : 95.56%
+09/04/2023 16:23:12 ::INFO:: Start validation loop
+09/04/2023 16:23:16 ::INFO:: Start validation loop
+09/04/2023 16:23:18 ::INFO:: Epoch 36/50
+09/04/2023 16:23:18 ::INFO:: ** Training loss : 0.04238
+09/04/2023 16:23:18 ::INFO:: ** Validation loss : 0.12228
+09/04/2023 16:23:18 ::INFO:: ***** Training acc : 100.00%
+09/04/2023 16:23:18 ::INFO:: ***** Validation acc : 95.56%
+09/04/2023 16:23:19 ::INFO:: Start validation loop
+09/04/2023 16:23:23 ::INFO:: Start validation loop
+09/04/2023 16:23:25 ::INFO:: Epoch 37/50
+09/04/2023 16:23:25 ::INFO:: ** Training loss : 0.11995
+09/04/2023 16:23:25 ::INFO:: ** Validation loss : 0.03213
+09/04/2023 16:23:25 ::INFO:: ***** Training acc : 90.91%
+09/04/2023 16:23:25 ::INFO:: ***** Validation acc : 97.78%
+09/04/2023 16:23:26 ::INFO:: Start validation loop
+09/04/2023 16:23:30 ::INFO:: Start validation loop
+09/04/2023 16:23:32 ::INFO:: Epoch 38/50
+09/04/2023 16:23:32 ::INFO:: ** Training loss : 0.12728
+09/04/2023 16:23:32 ::INFO:: ** Validation loss : 0.12968
+09/04/2023 16:23:32 ::INFO:: ***** Training acc : 81.82%
+09/04/2023 16:23:32 ::INFO:: ***** Validation acc : 93.33%
+09/04/2023 16:23:33 ::INFO:: Start validation loop
+09/04/2023 16:23:37 ::INFO:: Start validation loop
+09/04/2023 16:23:39 ::INFO:: Epoch 39/50
+09/04/2023 16:23:39 ::INFO:: ** Training loss : 0.18898
+09/04/2023 16:23:39 ::INFO:: ** Validation loss : 0.03175
+09/04/2023 16:23:39 ::INFO:: ***** Training acc : 72.73%
+09/04/2023 16:23:39 ::INFO:: ***** Validation acc : 100.00%
+09/04/2023 16:23:40 ::INFO:: Start validation loop
+09/04/2023 16:23:43 ::INFO:: Start validation loop
+09/04/2023 16:23:45 ::INFO:: Epoch 40/50
+09/04/2023 16:23:45 ::INFO:: ** Training loss : 0.10224
+09/04/2023 16:23:45 ::INFO:: ** Validation loss : 0.01818
+09/04/2023 16:23:45 ::INFO:: ***** Training acc : 90.91%
+09/04/2023 16:23:45 ::INFO:: ***** Validation acc : 100.00%
+09/04/2023 16:23:46 ::INFO:: Start validation loop
+09/04/2023 16:23:50 ::INFO:: Start validation loop
+09/04/2023 16:23:51 ::INFO:: Epoch 41/50
+09/04/2023 16:23:51 ::INFO:: ** Training loss : 0.06164
+09/04/2023 16:23:51 ::INFO:: ** Validation loss : 0.04388
+09/04/2023 16:23:51 ::INFO:: ***** Training acc : 100.00%
+09/04/2023 16:23:51 ::INFO:: ***** Validation acc : 97.78%
+09/04/2023 16:23:52 ::INFO:: Start validation loop
+09/04/2023 16:23:56 ::INFO:: Start validation loop
+09/04/2023 16:23:57 ::INFO:: Epoch 42/50
+09/04/2023 16:23:57 ::INFO:: ** Training loss : 0.07879
+09/04/2023 16:23:57 ::INFO:: ** Validation loss : 0.01837
+09/04/2023 16:23:57 ::INFO:: ***** Training acc : 100.00%
+09/04/2023 16:23:57 ::INFO:: ***** Validation acc : 100.00%
+09/04/2023 16:23:58 ::INFO:: Start validation loop
+09/04/2023 16:24:02 ::INFO:: Start validation loop
+09/04/2023 16:24:04 ::INFO:: Epoch 43/50
+09/04/2023 16:24:04 ::INFO:: ** Training loss : 0.02989
+09/04/2023 16:24:04 ::INFO:: ** Validation loss : 0.04411
+09/04/2023 16:24:04 ::INFO:: ***** Training acc : 100.00%
+09/04/2023 16:24:04 ::INFO:: ***** Validation acc : 97.78%
+09/04/2023 16:24:05 ::INFO:: Start validation loop
+09/04/2023 16:24:09 ::INFO:: Start validation loop
+09/04/2023 16:24:11 ::INFO:: Epoch 44/50
+09/04/2023 16:24:11 ::INFO:: ** Training loss : 0.04835
+09/04/2023 16:24:11 ::INFO:: ** Validation loss : 0.04485
+09/04/2023 16:24:11 ::INFO:: ***** Training acc : 100.00%
+09/04/2023 16:24:11 ::INFO:: ***** Validation acc : 97.78%
+09/04/2023 16:24:12 ::INFO:: Start validation loop
+09/04/2023 16:24:15 ::INFO:: Start validation loop
+09/04/2023 16:24:17 ::INFO:: Epoch 45/50
+09/04/2023 16:24:17 ::INFO:: ** Training loss : 0.18688
+09/04/2023 16:24:17 ::INFO:: ** Validation loss : 0.08575
+09/04/2023 16:24:17 ::INFO:: ***** Training acc : 90.91%
+09/04/2023 16:24:17 ::INFO:: ***** Validation acc : 97.78%
+09/04/2023 16:24:19 ::INFO:: Start validation loop
+09/04/2023 16:24:22 ::INFO:: Start validation loop
+09/04/2023 16:24:24 ::INFO:: Epoch 46/50
+09/04/2023 16:24:24 ::INFO:: ** Training loss : 0.10150
+09/04/2023 16:24:24 ::INFO:: ** Validation loss : 0.03024
+09/04/2023 16:24:24 ::INFO:: ***** Training acc : 90.91%
+09/04/2023 16:24:24 ::INFO:: ***** Validation acc : 100.00%
+09/04/2023 16:24:25 ::INFO:: Start validation loop
+09/04/2023 16:24:29 ::INFO:: Start validation loop
+09/04/2023 16:24:31 ::INFO:: Epoch 47/50
+09/04/2023 16:24:31 ::INFO:: ** Training loss : 0.14934
+09/04/2023 16:24:31 ::INFO:: ** Validation loss : 0.02708
+09/04/2023 16:24:31 ::INFO:: ***** Training acc : 90.91%
+09/04/2023 16:24:31 ::INFO:: ***** Validation acc : 100.00%
+09/04/2023 16:24:32 ::INFO:: Start validation loop
+09/04/2023 16:24:36 ::INFO:: Start validation loop
+09/04/2023 16:24:38 ::INFO:: Epoch 48/50
+09/04/2023 16:24:38 ::INFO:: ** Training loss : 0.04323
+09/04/2023 16:24:38 ::INFO:: ** Validation loss : 0.03532
+09/04/2023 16:24:38 ::INFO:: ***** Training acc : 100.00%
+09/04/2023 16:24:38 ::INFO:: ***** Validation acc : 97.78%
+09/04/2023 16:24:39 ::INFO:: Start validation loop
+09/04/2023 16:24:43 ::INFO:: Start validation loop
+09/04/2023 16:24:45 ::INFO:: Epoch 49/50
+09/04/2023 16:24:45 ::INFO:: ** Training loss : 0.08174
+09/04/2023 16:24:45 ::INFO:: ** Validation loss : 0.01354
+09/04/2023 16:24:45 ::INFO:: ***** Training acc : 90.91%
+09/04/2023 16:24:45 ::INFO:: ***** Validation acc : 100.00%
+09/04/2023 16:24:47 ::INFO:: Start validation loop
+09/04/2023 16:24:51 ::INFO:: Start validation loop
+09/04/2023 16:24:53 ::INFO:: Epoch 50/50
+09/04/2023 16:24:53 ::INFO:: ** Training loss : 0.08158
+09/04/2023 16:24:53 ::INFO:: ** Validation loss : 0.13260
+09/04/2023 16:24:53 ::INFO:: ***** Training acc : 90.91%
+09/04/2023 16:24:53 ::INFO:: ***** Validation acc : 93.33%
+09/04/2023 16:24:53 ::INFO:: 
+
+09/04/2023 16:24:53 ::INFO:: Model saved to EfficientNetB3_Bilberry_50epochs_Pretrained.pt.
+09/04/2023 16:24:53 ::INFO:: Time duration: 0:05:44.449749.
+09/04/2023 16:24:53 ::INFO:: End training.
