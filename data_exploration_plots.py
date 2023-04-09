@@ -21,7 +21,8 @@ colors = sns.color_palette('pastel')[0:5]
 
 ### Plot piechart
 plt.pie(data, labels = labels, colors = colors, autopct='%.0f%%')
-plt.savefig("imgs/imbalanced_data_piechart.png", format="png", transparent=True)
+plt.title("Field/Road image distribution")
+plt.savefig("contents/imbalanced_data_piechart.png", format="png", transparent=True)
 #####################################################
 
 
@@ -36,8 +37,8 @@ road_img_ratios = W_size_road/H_size_road
 field_img_ratios = W_size_field/H_size_field
 
 ### Remove outsiders
-road_img_ratios = road_img_ratios[road_img_ratios <= 2]
-field_img_ratios = field_img_ratios[field_img_ratios <= 2]
+road_img_ratios = road_img_ratios[(road_img_ratios <= 2)&(road_img_ratios >= 0.7)]
+field_img_ratios = field_img_ratios[(field_img_ratios <= 2)&(field_img_ratios >= 0.7)]
 
 ### Set fig suplots
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15,3))
@@ -63,5 +64,5 @@ ax2.legend([f"mean = {np.mean(field_img_ratios):.2f}"])
 ax2.set_title("Distribution of the W/H ratio for 'field' images")
 
 ### Save fig
-fig.savefig('imgs/WoverH_distribution_imgs.png')
+fig.savefig('contents/WoverH_distribution_imgs.png')
 ##############

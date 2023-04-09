@@ -24,17 +24,62 @@ Main Bilberry's problems can be tackled with Computer Vision. The goal here is t
 First, I'll expose a short data analysis and the image preprocessing that I choose to handle various problems that could be encountered like the lack of data which conduct for sure to a model with a weak capacity to generalize on unseen data (also known as overfitting). Then, I'll explain and expose my architecture choices for the building steps of my model and talk about the results I obtained compare with some online work I found. I'll talk also about the limitations of this project which is seriously lacking of data. Finally, I'll show an other PoC than can be related to Bilberry's product challenge, namely, computational cost.
 
 # Exploration data analysis
-The data provided by Bilberry contains a set of field/road folders and a testing folder containing a mix of field an road images. 
+The data provided by Bilberry contains a set of field/road folders and a testing folder containing a mix of field an road images. The script of this part is available [here](data_exploration_plots.py).
 
 ### Data balance
-At first glance, we see that the data are quite **unbalanced**: road images represent more than 70% of the raw dataset (see piechart). We have to keep that in mind if we want a well trained model than can produce good predictions for both classes.
+At first glance, we see that the data are quite **imbalanced**: road images represent more than 70% of the raw dataset (see piechart). We have to keep that in mind if we want a well trained model than can produce good predictions for both classes.
 
 ### Resolution distribution
-The **resolution varies a lot** from one image to an other. A barchart shows the resolution distribution as the ratio between the width and the height (outsiders has been removed). A simple hypothesis I made is to resize image by the mean of the W/H ratios to prevent hard form deformations on the maximum of images. To simplify the process, I decided to resize images with a **W/H ratio of 1.5** before 
-
-
+The **resolution varies a lot** from one image to an other. A barchart shows the resolution distribution as the ratio between the width and the height (outsiders has been removed). A simple hypothesis I made is to resize images by keeping a W/H ratio equal to the mean of the W/H ratio of the distribution to prevent hard form distortions on the majority of the images.
 
 <p align="center">
   <img src="contents/imbalanced_data_piechart.png?raw=true" alt="piechart" width="400"/>
-  <img src="contents/WoverH_distribution_imgs.png?raw=true" alt="piechart" width="600"/>
+  <img src="contents/WoverH_distribution_imgs.png?raw=true" alt="barchart" width="600"/>
+</p>
+
+
+# Building our dataset (preprocessing)
+I use Pytorch for this project. Hence, I built a [custom dataset](bilberry_dataset.py) class named `BilberryDataset` with the `torch.utils.data.Dataset` module which will be loaded as a `torch.utils.data.DataLoader`. With the data exploratory made previously and the classic machine learning knowledge, this dataset class should handle :
+
+* Data leaking: assure that training and validation images are all differents
+* Data imbalanced: making sure to draw as much road image as field image in each batch
+* Data resizing: choosing a resolution for output images that will fit with the model
+* Data augmentation: vary the data distribution by randomly shift image properties
+
+The first bullet is managed in the `__init__` constructor of the `BilberryDataset` class. The dataset provided is split into train/val set which respectively contains 70% and 30% of the road and field images.
+
+The second point comes with a trick in the `__getitem__` method: I use a conditional loop that decide which class image to call based on the index number that will be set by the dataloader when it constructs a batch of images. This loop is adjust by the instance variable `ratio=1` i.e. a 1:1 ratio between field and road images.
+
+```python
+if self.ratio:
+    ### Create a new idx regarding the asked ratio
+    pos_idx = idx // (self.ratio + 1)
+
+    ### Select img/label regarding the ratio
+    if idx % (self.ratio + 1):
+        neg_idx = idx - 1 - pos_idx
+        neg_idx = neg_idx % len(self.imgset_roads)
+        img_path = self.imgset_roads[neg_idx]
+        label = self.label_roads[neg_idx]
+    else:
+        pos_idx = pos_idx % len(self.imgset_fields)
+        img_path = self.imgset_fields[pos_idx]
+        label = self.label_fields[pos_idx]
+```
+
+Thirdly, I decided to rescale images with a W/H ratio of 1.5 to distort images to a minimum. The images are then rescale to `H, W = (250, 375)` in the `_preprocess` method.
+
+Last but not least, I had to decide to a data augmentation strategy to tackle the lack of data. I made multiple observations: 
+* horizontal flipping keeps the meaning of an image whereas it is a field or road image, 
+* to enlarge the distribution and predict variation of light, image quality and noisiness (like dust) we can play with the `brightness`, the `contrast` and the `saturation`. Values have been chose empiricaly such as it does not break the image meaning, even with the lower and higher values.
+
+<p align="center">
+  <img src="contents/ColorJitter_field.png?raw=true" alt="jitter_field" width="400"/>
+  <img src="contents/ColorJitter_road.png?raw=true" alt="jitter_road" width="400"/>
+</p>
+
+* a random crop of a square size `224` is applied to the rescaled images since we need a square tensor to feed our model. The randomness permits to force the model to focus and learn specific region of the image one at a time. 
+
+<p align="center">
+  <img src="contents/RandomCrop_field.png?raw=true" alt="crop_field" width="400"/>
 </p>
