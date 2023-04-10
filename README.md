@@ -42,7 +42,7 @@ Main Bilberry's problems can be tackled with Computer Vision. The goal here is t
 
 First, I'll expose a short data analysis and the image preprocessing that I choose to handle various problems that could be encountered like the lack of data which conduct for sure to a model with a weak capacity to generalize on unseen data (also known as overfitting). Then, I'll explain and expose my architecture choices for the building steps of my model and talk about the results I obtained compare with some online work I found. I'll talk also about the limitations of this project which is seriously lacking of data. Finally, I'll show an other PoC than can be related to Bilberry's product challenge, namely, computational cost.
 
-# Exploration data analysis <a name="EDA"></a>
+# Exploration data analysis <a name="eda"></a>
 The data provided by Bilberry contains a set of field/road folders and a testing folder containing a mix of field an road images. 2 images were mislabeled, I moved them into the right folders. The script of this part is available [here](data_exploration_plots.py). 
 
 ### Data balance
@@ -183,3 +183,18 @@ This part is refering to the [train](train.py) script.
 
 
 # Results <a name="results"></a>
+
+<p align="center">
+    <em> Class Activation Map of well predicted field and road images</em>
+</p>
+<p align="center">
+  <img src="contents/CAM_fields.png?raw=true" alt="jitter_field" width="1000"/>
+  <img src="contents/CAM_roads.png?raw=true" alt="jitter_road" width="1000"/>
+</p>
+
+# Conclusion <a name="conclusion"></a>
+
+# Going further <a name="further"></a>
+## Distilled Network
+## Pruning
+## Float16 learning
