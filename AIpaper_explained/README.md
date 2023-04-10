@@ -41,10 +41,10 @@ As mentioned above, ViT models use multi-head self-attention architecture, excep
     <em> Figure 1: Using Multi-Head self-attention encoder in Computer Vision</em>
 </p>
 
-The main differences lies in turning the image into a form compatible with the MHA block. The authors suggests splitting images into fixed-size patches, linearly embedding each of them and add (or concat, it depends of the method) position embeddings (this process is very similar to the one used in NLP problems). Like in NLP, position is important and positional encoding adds learnable parameters to keep in track the position of each patch. Note that in a non intuitive manner, positinal encoding is not compulsory, but conducts to higher performances.
+The main differences lies in turning the image into a form compatible with the MHA block. The authors suggests splitting images into fixed-size patches, linearly embedding each of them and add (or concat, it depends of the method) position embeddings (this process is very similar to the one used in NLP problems). Like in NLP, position is important and positional encoding adds learnable parameters to keep in track the position of each patch (see [Figure 2](#fig2)). Note that in a non intuitive manner, positinal encoding is not compulsory, but conducts to higher performances.
 
 <p align="center">
-    <img src="contents/ViT.png?raw=true" width="450" name="fig1"/>
+    <img src="contents/ViT.png?raw=true" width="450" name="fig2"/>
 </p>
 <p align="center">
     <em> Figure 2: Vision Transformer architecture (from paper)</em>
