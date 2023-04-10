@@ -90,7 +90,7 @@ Last but not least, I had to decide to a data augmentation strategy to tackle th
 
 
 # Building the model
-This part refers to the [modelBuilder](modelBuilder.py) script. Since we do not have a lot of images, I used pretrained model on ImageNet from [ImageNet Large Scale Visual Recognition Challenge](https://arxiv.org/pdf/1409.0575.pdf).
+This part is refering to the [modelBuilder](modelBuilder.py) script. Since we do not have a lot of images, I used pretrained model on ImageNet from [ImageNet Large Scale Visual Recognition Challenge](https://arxiv.org/pdf/1409.0575.pdf).
 ## ResNet
 I decided to take ResNet34 from [*Deep Residual Learning for Image Recognition*](https://arxiv.org/pdf/1512.03385.pdf) as a baseline. I previously worked with this model and it is a well documented one and a lot of projects are based on this one. 
 
@@ -107,9 +107,9 @@ Facing to ResNet34 I choose a most up to date state of the art model. EfficientN
     <em> Model Size vs. ImageNet Accuracy from EfficientNet paper </em>
 </p>
 
-[TODO]
 
 # Training setup
+This part is refering to the [train](train.py) script.
 * **Optimizer**: Adam from [*Adam: A Method for Stochastic Optimization*](https://arxiv.org/pdf/1412.6980.pdf) with a learning rate `lr=0.001` and `weight_decay=0.0005`. It is most of the time a good idea to start with this basic and well known optimizer and those values as a baseline.
 * **Criterion**: Binary CrossEntropy Loss function `torch.nn.BCELoss``
 * **Device**: `mps` or `cuda` if available, else `cpu` (note on mps device [here](https://pytorch.org/docs/stable/notes/mps.html))
