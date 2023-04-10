@@ -7,7 +7,7 @@
 
 Welcome to the Bilberry Assessment. This repository brings together my work on field/road classifier and a short overview of an AI paper which has brought (I think) a significant disruption on computer vision.
 
-You'll find **my main work** in this root folder and the **AI paper sumup** here[ADD PATH]. Finally, I give an overview of one way to **go further** [here](AIpaper_explain/) by thinking about a challenge that the Bilberry's product might overcome. 
+You'll find **my main work** in this root folder and the **AI paper sumup** [here](AIpaper_explained/). Finally, I give an overview of one way to **go further** [here](TODO) by thinking about a challenge that the Bilberry's product might overcome. 
 
 
 
