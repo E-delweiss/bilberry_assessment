@@ -101,7 +101,6 @@ Facing to ResNet34 I choose a most up to date state of the art model. EfficientN
 
 <p align="center">
     <img src="contents/efficientnet_paper_comparisons.png?raw=true" width="400"/>
-    
 </p>
 <p align="center">
     <em> Model Size vs. ImageNet Accuracy from EfficientNet paper </em>
