@@ -9,51 +9,27 @@ current_folder = os.path.dirname(locals().get("__file__"))
 parent_folder = Path(current_folder).parent
 sys.path.append(str(parent_folder))
 
-from metrics import class_acc, hard_class_acc
+from metrics import class_acc, metrics
 
-class TestYololoss(unittest.TestCase):
-    def __init__(self, TestYololoss) -> None:
-        super().__init__(TestYololoss)
-        S = 7
-        B = 2
-        C = 8
+class TestMetrics(unittest.TestCase):
+    def __init__(self, TestMetrics) -> None:
+        super().__init__(TestMetrics)
         BATCH_SIZE = 32
 
-        self.target = torch.zeros(BATCH_SIZE, S, S, 5+C)
-        N = range(BATCH_SIZE)
-        i = torch.randint(S, (1,BATCH_SIZE))
-        j = torch.randint(S, (1,BATCH_SIZE))
-        box_value = torch.rand((BATCH_SIZE, 5))
-        self.target[N,i,j,:5] = box_value
-
-        label_true = torch.zeros(BATCH_SIZE, C)
-        idx = torch.randint(C, (1, BATCH_SIZE))
-        label_true[N, idx] = 1
-        self.target[N,i,j,5:] = label_true
-        
-        self.prediction = torch.zeros(BATCH_SIZE, S, S, 5*B+C)
-        self.prediction[:,:,:,10:] = torch.rand(8)
-        self.prediction[N,i,j,10:] = label_true
-
-        self.N, self.i, self.j = N, i, j
-
+        self.target = torch.zeros(BATCH_SIZE)
+        self.target[:BATCH_SIZE//2] = torch.ones(BATCH_SIZE//2)
+        self.prediction = torch.zeros(BATCH_SIZE)
+    
     def test_class_acc(self):
-        prediction = self.prediction.clone()
-        prediction[self.N, self.i, self.j, 10:] *= 0.999
-        acc = class_acc(self.target, prediction)
+        acc = class_acc(self.target, self.prediction)
         self.assertIs(type(acc), float)
-        self.assertGreaterEqual(acc, 0.)
-        self.assertLessEqual(acc,1.)
-        self.assertAlmostEqual(acc, 1)
+        self.assertAlmostEqual(acc, 0.5)
 
-    def test_class_hard_acc(self):
-        prediction = self.prediction.clone()
-        prediction[self.N, self.i, self.j, 10:] *= 0.999
-        acc = hard_class_acc(self.target, prediction)
-        self.assertIs(type(acc), float)
-        self.assertGreaterEqual(acc, 0.)
-        self.assertLessEqual(acc,1.)
-        self.assertAlmostEqual(acc, 1)
+    def test_metrics(self):
+        metrics_dict = metrics(self.target, self.prediction)
+        self.assertIs(type(metrics_dict), dict)
+        self.assertGreaterEqual(metrics_dict["F1_score"], 0.)
+        self.assertLessEqual(metrics_dict["F1_score"],1.)
 
 
 

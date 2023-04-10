@@ -99,7 +99,7 @@ def convert_and_classify(classifier_model, cam_model, image):
     show_cam(classifier_model, tensor_img_list, features_list, results_list)
 
 
-if __main__ == "__name__":
+if __name__ == "__main__":
     imgs = [
     'dataset/roads/53.jpeg',
     'dataset/roads/46.jpeg',

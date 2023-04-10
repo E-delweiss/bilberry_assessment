@@ -102,7 +102,7 @@ def resNetBilberry(load_resNetBilberry_weights:bool=False, pretrained:bool=True)
         model.load_state_dict(torch.load(resNetBilberry_weights))
     return model
 
-def efficientNetBilberry(load_efficientNetBilberry:bool=False, pretrained:bool=True) -> EfficientNetBilberry:
+def efficientNetBilberry(load_efficientNetBilberry_weights:bool=False, pretrained:bool=True) -> EfficientNetBilberry:
     """
     Load EfficientNetB0 model from torchvision.
 
@@ -118,7 +118,7 @@ def efficientNetBilberry(load_efficientNetBilberry:bool=False, pretrained:bool=T
     config.read("config.ini")
 
     model = EfficientNetBilberry(pretrained)
-    if load_efficientNetBilberry:
+    if load_efficientNetBilberry_weights:
         efficientNetBilberry_weights = config.get("WEIGHTS", "efficientNetBilberry_weights")
         print(f"Loading {efficientNetBilberry_weights} weights...")
         model.load_state_dict(torch.load(efficientNetBilberry_weights))

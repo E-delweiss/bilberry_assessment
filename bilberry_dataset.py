@@ -116,5 +116,5 @@ def get_validation_dataset(BATCH_SIZE=None, **kwargs):
 
 
 if __name__ == "__main__":
-    dataset = get_validation_dataset(ratio=1, isAugment=False, isNormalize=True)
-    print(type(next(iter(dataset))[0]))
+    dataset = get_validation_dataset(ratio=1, isAugment=False)
+    print(len(next(iter(dataset))))
