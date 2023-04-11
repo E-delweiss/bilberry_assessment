@@ -32,9 +32,6 @@ You'll find **my main work** in this root folder and the **AI paper summary** [h
 **[8. Going Further](#further)**
 
 
-
-sumup
-
 # Introduction <a name="intro"></a>
 Main Bilberry's problems can be tackled with Computer Vision. The goal here is to handle a supervised machine learning problem to classify **field** and **road** images.
 
@@ -63,7 +60,7 @@ The **resolution varies a lot** from one image to an other. A barchart shows the
 </p>
 
 ### Challenges
-One can also talk about some of image that have an ambiguous meaning and may be difficult to learn and classify well. For instance, some field has a well define roadlike path and some road image contans a lot of vegetation.
+One can also talk about some images that have an ambiguous meaning and may be difficult to learn and classify well. For instance, some field has a well define roadlike path and some road image contans a lot of vegetation.
 
 
 
@@ -191,24 +188,89 @@ Non-trainable params: 3,226,108
 
 # Training setup <a name="training"></a>
 This part is refering to the [train](train.py) script.
-* **Optimizer**: [Adam](https://arxiv.org/pdf/1412.6980.pdf) with a learning rate `lr=0.001` and `weight_decay=0.0005`. It is most of the time a good idea to start with this basic and well known optimizer and those values as a baseline
+* **Optimizer**: [Adam](https://arxiv.org/pdf/1412.6980.pdf) `torch.optim.Adam` with a learning rate `lr=0.001` and `weight_decay=0.0005`. It is most of the time a good idea to start with this basic and well known optimizer and those values as a baseline
 * **Criterion**: Binary CrossEntropy Loss function `torch.nn.BCELoss`
+* **Epoch**: I chose `nb_epoch = 50`
 * **Device**: `mps` or `cuda` if available, else `cpu` (note on mps device [here](https://pytorch.org/docs/stable/notes/mps.html))
 
 
 # Results <a name="results"></a>
+First thing we constat is the validation loss of ResNet34 has a better behavior than EfficientNetB0. For comparisons on EfficientNet, I also trained EfficientNetB3 and B4 fully freezed except the head. We see that the validation loss has a better convergence and EfficientNetB4 seems to give the best loss "stability". This aspect can also be felt in the validation accuracy.
+Finally, EfficientNetB4 seems to be comparable to ResNet34, even at balancing recall and precision (see F1 score).
+
+All results are available in : 
+* [runs](/runs) for the tensorboard sessions 
+* [models](/models) for the `.pt` weight files of each model
+* [logs](/logs) for the log file of each experiment
+
+Note that validation evolution could be better that trainings since the models are pretrained. So the model may be already able to well classify some image.
 
 <p align="center">
-    <em> Class Activation Map of well predicted field and road images</em>
+  <img src="contents/val_loss.png?raw=true" alt="val_loss" width="400"/>
+  <img src="contents/val_acc.png?raw=true" alt="val_loss" width="400"/>
 </p>
+<p align="center">
+    <em> Figure 4: Validation loss and accuracy (extract from Tensorboard)</em>
+</p>
+
+<p align="center">
+  <img src="contents/F1_score.png?raw=true" alt="val_loss" width="500"/>
+</p>
+<p align="center">
+    <em> Figure 5: F1 score of ResNet34 and EfficientNetB4 (extract from Tensorboard)</em>
+</p>
+
+## Class Activation Map
+Class activation maps (CaM) show what parts of the image the model was paying attention to when deciding the class of the image. This is show by colored spots on images. We see above some well classify field and road images. 
+
+
 <p align="center">
   <img src="contents/CAM_fields.png?raw=true" alt="jitter_field" width="1000"/>
   <img src="contents/CAM_roads.png?raw=true" alt="jitter_road" width="1000"/>
 </p>
+<p align="center">
+    <em> Figure 6: Class Activation Map of well predicted field and road images</em>
+</p>
+
+* Field CaM: shows that the model is sensitive to vegetation but also to straight lines in fields like furrows. It also seems to detect some elements in the sky.
+* Road CaM: the model seems to also spot straight lines like road boundaries, and yellow marks on asphalt. Also, it seems to be a bit sensitive to vegetation.
+
+Regarding what has been said, here is the results on test set :
+<p align="center">
+  <img src="contents/field_outputs.png?raw=true" alt="field_outputs" width="1000"/>
+</p>
+<p align="center">
+  <img src="contents/road_outputs.png?raw=true" alt="jitter_field" width="1000"/>
+</p>
+
+It appears that the second field image is misclassify. Below, we show the CaM relatives to this image.
+<p align="center">
+  <img src="contents/misclassify.png?raw=true" alt="miss" width="200"/>
+</p>
+
+We see that the model has spotted the sky and monsly the grass. It may be confused with the straight lines in the sky and the massive vegetation in the floor.
+
 
 # Conclusion <a name="conclusion"></a>
+As a conclusion, we may say that the dataset is too small to interpret the model performances. **ResNet34** is a good baseline for this project and seems to give better or equal results compared to EfficientNets.
+
+At this stage, one may not be confident about our model. The dataset should be larger and more diversify to cover main field and road aspects.
+
+
 
 # Going further <a name="further"></a>
-## Distilled Network
-## Pruning
-## Float16 learning
+Finally, let's suppose we have a good amount of data. What will be the challenge of a today's embedded product like Bilberry's?
+
+One of the today's challenge is to be able to handle large and deep neural networks. For that, we are limited by the computational efficiency. Since having cutting edge hardware is expensive and we want to reach a large fleet of users, we need to work on model efficiency i.e. make the model small while keeping a good accuracy.
+
+Here are solutions that may be interesting to look at.
+
+* **Distilled Knowledge**: using complex and well trained model to act as a teacher, facing and a much smaller, untrained model (the student). At the end, the student model is much easier to deploy, without loss in performance. \
+https://keras.io/examples/vision/knowledge_distillation/
+
+
+* **Pruning**: works like a model simplifier that will sparsify neural networks. Indeed, a lot of SOTA models rely on over-parametrized layers rendering a model hard to deploy. The goal is to lightening models without loosing performances(over-parameterized models vs under-parameterized models).\
+https://pytorch.org/tutorials/intermediate/pruning_tutorial.html
+
+* **Mixed precision training**: in deep learning, high precision is not always mandatory. Actually, matrix multiplications and convolutions could be executed in float16 instead float32 or float64. By doing so, it has been shown that computations may be up to 16 times faster. Also, float16 is half the size of float32 which means (among others) reducing training memory.\
+https://pytorch.org/blog/what-every-user-should-know-about-mixed-precision-training-in-pytorch/

@@ -5,7 +5,7 @@ I wanted to talk about this paper because I found it was a new and exciting way 
 
 First of all, it talks about pretraining on more than 300M high resolution images ! The fact that we can deal with such an amont of high resolution data is impressive (you would need the computational power of Google, but still). 
 
-Futhermore, this paper tickled my engineer brain: in product engineering, starting a new project comes with high expenses, especially in aeronautics where I come frome. To innovate on a new architecture, one should reconsider the whole process, from research offices to assembly lines. So, the first question is *what do we have "on shelves" that works, and that could fit with this new project ?*. That paper uses that line of thinking, it's why I found it so clever. We know that self attention models is a game changer in NLP problems, so the authors came up with this idea *"could we reuse what is actually working well to deal with an other scope of problems ?"*.
+Futhermore, this paper tickled my engineer brain: in product engineering, starting a new project comes with high expenses, especially in aeronautics where I come frome. To innovate on a new architecture, one should reconsider the whole process, from research offices to assembly lines. So, the first question is *what do we have "on shelves" that works, and that could fit with this new project ?* That paper uses that line of thinking, it's why I found it so clever. We know that self attention model is a game changer in NLP problems, so the authors came up with this idea *"could we reuse what is actually working well to deal with an other scope of problems ?"*.
 
 ## Results
 ### Interests
@@ -17,7 +17,7 @@ Futhermore, this paper tickled my engineer brain: in product engineering, starti
 ### Drawbacks
 * It requires a huge amont of data for the pretraining, and lighter versions do not, or struggle to, attain SOTA accuracies
 * Usually, architectures are tested on images recognition tasks but also on detection and segmentation. Those last challenges are not explored in this paper
-* Even if pretraining would require such expensive computational costs that only few people may want to reproduce the pretraining, one can note that the dataset (JFT-300M) used is not open-source and then this paper is not reproducible outside of Google.
+* Even if pretraining would require such expensive computational costs that only few people may want to reproduce it, one can note that the dataset (JFT-300M) used is not open-source and then this paper is not reproducible outside of Google.
 
 ## References
 Related references you may want to check to have a better understanding of this paper.
@@ -41,7 +41,7 @@ As mentioned above, ViT models use multi-head self-attention architecture, excep
     <em> Figure 1: Using Multi-Head self-attention encoder in Computer Vision</em>
 </p>
 
-The main differences lies in turning the image into a form compatible with the MHA block. The authors suggests splitting images into fixed-size patches, linearly embedding each of them and add (or concat, it depends of the method) position embeddings (this process is very similar to the one used in NLP problems). Like in NLP, position is important and positional encoding adds learnable parameters to keep in track the position of each patch (see [Figure 2](#fig2)). Note that in a non intuitive manner, positinal encoding is not compulsory, but conducts to higher performances.
+The main difference lies in turning the image into a form compatible with the MHA block. The authors suggest splitting images into fixed-size patches, linearly embedding each of them and add (or concat, it depends of the method) position embeddings (this process is very similar to the one used in NLP problems). Like in NLP, position is important and positional encoding adds learnable parameters to keep in track the spatial position of each patch (see [Figure 2](#fig2)). Note that in a non intuitive manner, positinal encoding is not compulsory, but conducts to higher performances.
 
 <p align="center">
     <img src="contents/ViT.png?raw=true" width="450" name="fig2"/>
@@ -51,7 +51,7 @@ The main differences lies in turning the image into a form compatible with the M
 </p>
 
 ### Note about ViT
-By using ViT, one looses the inductive bias than provides CNNs. The authors explain: "*In CNNs, locality, two-dimensional neighborhood structure, and translation equivariance are baked into each layer throughout the whole model. In ViT, only MLP layers are local and translationally equivariant, while the self-attention layers are global*". The only 2D information carried by the model, lies in the beggining of the architecture (patch splitting and positional embeddings) and "*all spatial relations between the patches have to be learned from scratch*". Knowing that it appears understandable that ViTs need a large amont of images compared to CNNs.
+By using ViT, one looses the inductive bias provided by CNNs. The authors explain: "*In CNNs, locality, two-dimensional neighborhood structure, and translation equivariance are baked into each layer throughout the whole model. In ViT, only MLP layers are local and translationally equivariant, while the self-attention layers are global*". The only 2D information carried by the model, lies in the beggining of the architecture (patch splitting and positional embeddings) and "*all spatial relations between the patches have to be learned from scratch*". Knowing that it appears understandable that ViTs need a large amont of images compared to CNNs.
 
-As an alternative, hybrid architecture could be considered, where input sequences (patches) are a CNN's feature maps.
+As an alternative, hybrid architecture could be considered, where input sequences (patches) are a CNN's feature maps. This architecture is also exposed in the paper.
 

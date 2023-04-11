@@ -26,14 +26,14 @@ class Cam_model(torch.nn.Module):
         x_2 = self.model_out2(torch.nn.Flatten()(x_1b))
         return x_1, x_2
 
-def plot_CAM(classifier_model, image_value, features, results):
+def plot_CAM(classifier_model, image_value_list, features_list, results_list):
     '''
     Displays the class activation map of a list of images
 
     Args:
-        image_value (tensor) -- preprocessed input image with size 224 x 224
-        features (array) -- features of the image, list of shape (1, 7, 7, 512)
-        results (array) -- list of output of the sigmoid layer
+        image_value (list of torch.Tensor): preprocessed input image with size 224 x 224
+        features (list of array): features of the image, list of shape (1, 7, 7, 512)
+        results (list array): list of output of the sigmoid layer
     '''
     nb_img = len(image_value_list)
     fig = plt.figure(figsize=(25, 15))
@@ -97,19 +97,19 @@ def convert_and_classify(classifier_model, cam_model, img_paths):
             features_list.append(features)
             results_list.append(results)
 
-    show_cam(classifier_model, tensor_img_list, features_list, results_list)
+    plot_CAM(classifier_model, tensor_img_list, features_list, results_list)
 
 
 if __name__ == "__main__":
     imgs = [
-    'dataset/roads/53.jpeg',
-    'dataset/roads/46.jpeg',
-    'dataset/roads/pexels-photo-775199.jpeg',
-    'dataset/roads/pexels-photo-209652.jpeg',
-    'dataset/roads/3b.jpg',
-    'dataset/roads/6.jpg',
-    'dataset/roads/15.jpg',
-    'dataset/roads/iceland-4957449__340.jpg'
+    'dataset/test_images/fields/4.jpeg',
+    # 'dataset/roads/46.jpeg',
+    # 'dataset/roads/pexels-photo-775199.jpeg',
+    # 'dataset/roads/pexels-photo-209652.jpeg',
+    # 'dataset/roads/3b.jpg',
+    # 'dataset/roads/6.jpg',
+    # 'dataset/roads/15.jpg',
+    # 'dataset/roads/iceland-4957449__340.jpg'
     ]
 
     model = modelBuilder.resNetBilberry(load_resNetBilberry_weights=True)
