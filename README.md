@@ -253,7 +253,7 @@ Regarding what has been said, here is the results on test set :
     <em> Figure 7: Predictions on test set with ResNet34 </em>
 </p>
 
-It appears that the second field image is misclassify. Below, we show the CaM relatives to this image.
+It appears that the third field image is misclassify. Below, we show the CaM relatives to this image.
 <p align="center">
   <img src="contents/misclassify.png?raw=true" alt="miss" width="200"/>
 </p>

@@ -102,7 +102,7 @@ def convert_and_classify(classifier_model, cam_model, img_paths):
 
 if __name__ == "__main__":
     imgs = [
-    'dataset/test_images/fields/4.jpeg',
+    'dataset/test_images/fields/9.jpeg',
     # 'dataset/roads/46.jpeg',
     # 'dataset/roads/pexels-photo-775199.jpeg',
     # 'dataset/roads/pexels-photo-209652.jpeg',
