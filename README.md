@@ -195,6 +195,13 @@ This part is refering to the [train](train.py) script.
 
 
 # Results <a name="results"></a>
+The model and weights used for this results are as follow:
+* ResNet34 -> models/ResNet34_Bilberry_50epochs_Pretrained.pt
+* EfficientNetB0 -> models/EfficientNetB0_Bilberry_50epochs_Pretrained80pct.pt
+* EfficientNetB3 -> models/EfficientNetB3_Bilberry_50epochs_Pretrained.pt
+* EfficientNetB3 -> models/EfficientNetB4_Bilberry_50epochs_Pretrained.pt
+
+
 The first thing we observe is the validation loss of ResNet34 has a better behavior than EfficientNetB0. For comparisons on EfficientNet, I also trained EfficientNetB3 and B4 fully frozen except the head. We see that the validation loss has a better convergence and EfficientNetB4 seems to give the best loss "stability". This aspect can also be felt in the validation accuracy.
 Finally, EfficientNetB4 seems to be comparable to ResNet34, even at balancing recall and precision (see F1 score).
 
