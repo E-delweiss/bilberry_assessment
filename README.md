@@ -261,7 +261,7 @@ It appears that the third field image is misclassify. Below, we show the CaM rel
     <em> Figure 8: Class Activation Map of dataset/test_images/fields/4.jpeg</em>
 </p>
 
-We see that the model has spotted the sky and monsly the grass. It may be confused with the straight lines in the sky and the massive vegetation in the floor.
+We see that the model has spotted the sky and mostly the grass. It may be confused with the straight lines formed by clouds in the sky and the massive vegetation in the floor.
 
 
 # Conclusion <a name="conclusion"></a>
