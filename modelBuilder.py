@@ -36,9 +36,6 @@ class ResNetBilberry(torch.nn.Module):
         )
 
     def forward(self, input:torch.Tensor):
-        """
-        TODO
-        """
         x = self.resnet(input)
         x = torch.nn.Sigmoid()(x)
         return x
@@ -75,9 +72,6 @@ class EfficientNetBilberry(torch.nn.Module):
         )
 
     def forward(self, input:torch.Tensor):
-        """
-        TODO
-        """
         x = self.efficientnet(input)
         x = torch.nn.Sigmoid()(x)
         return x

@@ -62,14 +62,15 @@ def plot_CAM(classifier_model, image_value, features, results):
         plt.imshow(torch.squeeze(image_value).permute(1,2,0), alpha=0.5)
 
 
-def convert_and_classify(classifier_model, cam_model, image):
+def convert_and_classify(classifier_model, cam_model, img_paths):
     """
-    TODO
+    Convert image to tensor and feed to the CAM model.
+    Extracting features and results.
 
     Args:
-        classifier_model (_type_): _description_
-        cam_model (_type_): _description_
-        image (_type_): _description_
+        classifier_model (torch.nn.Module): trained model
+        cam_model (torch.nn.Module): classify activation map model
+        image (list of PIL.Image): input images
     """
     features_list = []
     results_list = []

@@ -76,7 +76,7 @@ class BilberryDataset(torch.utils.data.Dataset):
         if self.ratio:
             pos_idx = idx // (self.ratio + 1)
 
-            ### TODO
+            ### Choose idx depending on ratio
             if idx % (self.ratio + 1):
                 neg_idx = idx - 1 - pos_idx
                 neg_idx = neg_idx % len(self.imgset_roads)
@@ -90,31 +90,40 @@ class BilberryDataset(torch.utils.data.Dataset):
             img_path = self.imgset[idx]
             label = self.labelset[idx]
 
+        ### Open and preprocessing image
         img_PIL = PIL.Image.open(img_path).convert('RGB')
         image = self._preprocess(img_PIL)
 
         return image, torch.tensor(label).to(torch.float32)
 
 
-def get_training_dataset(BATCH_SIZE=16, **kwargs):
+def get_training_dataset(BATCH_SIZE:int=16, **kwargs):
     """
-    Loads and maps the training split of the dataset using the custom dataset class. 
+    Loads and maps the training split of the dataset using the custom dataset class.
+
+    Args:
+        BATCH_SIZE (int, optional): size of the training batch. Defaults to 16.
+
+    Returns:
+        dataloader (torch.utils.data.DataLoader): training dataloader.
     """
     dataset = BilberryDataset(isValSet=False, **kwargs)
     dataloader = torch.utils.data.DataLoader(dataset, batch_size=BATCH_SIZE, shuffle=True)
     return dataloader
 
-def get_validation_dataset(BATCH_SIZE=None, **kwargs):
+def get_validation_dataset(BATCH_SIZE:int=None, **kwargs):
     """
-    Loads and maps the validation split of the datasetusing the custom dataset class. 
+    Loads and maps the validation split of the dataset using the custom dataset class.
+
+    Args:
+        BATCH_SIZE (int, optional): size of the validation batch. If None, 
+        take the whole dataset.Defaults to None.
+
+    Returns:
+        dataloader (torch.utils.data.DataLoader): training dataloader.
     """
     dataset = BilberryDataset(isValSet=True, **kwargs)
     if BATCH_SIZE is None:
         BATCH_SIZE = len(dataset)
     dataloader = torch.utils.data.DataLoader(dataset, batch_size=BATCH_SIZE, shuffle=True)
     return dataloader
-
-
-if __name__ == "__main__":
-    dataset = get_validation_dataset(ratio=1, isAugment=False)
-    print(len(next(iter(dataset))))

@@ -7,11 +7,11 @@ def class_acc(target:torch.Tensor, prediction:torch.Tensor)->float:
     Compute model accuracy
 
     Args:
-        target (torch.Tensor) size : TODO
-        prediction (torch.Tensor) size : TODO
+        target (torch.Tensor): groundtruth label
+        prediction (torch.Tensor): predicted label
 
     Returns:
-        float: accuracy in (%)
+        acc (float): accuracy in (%)
     """
     BATCH_SIZE = len(target)
     
@@ -22,7 +22,14 @@ def class_acc(target:torch.Tensor, prediction:torch.Tensor)->float:
 
 def metrics(target:torch.Tensor, prediction:torch.Tensor)->dict:
     """
-    TODO
+    Extract confusion matrix components and compute recall, precision and F1 score.
+
+    Args:
+        target (torch.Tensor): groundtruth label
+        prediction (torch.Tensor): predicted label
+
+    Returns:
+        metrics_dict (dict): dict containing TP, TN, FP, FN, recall, precision, F1 score
     """
     # prediction = prediction.to(torch.device("cpu"))
 
