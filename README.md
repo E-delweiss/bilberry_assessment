@@ -249,10 +249,16 @@ Regarding what has been said, here is the results on test set :
 <p align="center">
   <img src="contents/road_outputs.png?raw=true" alt="jitter_field" width="1000"/>
 </p>
+<p align="center">
+    <em> Figure 7: Predictions on test set with ResNet34 </em>
+</p>
 
 It appears that the second field image is misclassify. Below, we show the CaM relatives to this image.
 <p align="center">
   <img src="contents/misclassify.png?raw=true" alt="miss" width="200"/>
+</p>
+<p align="center">
+    <em> Figure 8: Class Activation Map of dataset/test_images/fields/4.jpeg</em>
 </p>
 
 We see that the model has spotted the sky and monsly the grass. It may be confused with the straight lines in the sky and the massive vegetation in the floor.
