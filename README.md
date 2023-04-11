@@ -274,7 +274,7 @@ At this stage, one may not be confident about our model. The dataset should be l
 # Going further <a name="further"></a>
 Finally, let's suppose we have a good amount of data. What will be the challenge of a today's embedded product like Bilberry's?
 
-One of the today's challenge is to be able to handle large and deep neural networks. For that, we are limited by the computational efficiency. Since having cutting edge hardware is expensive and we want to reach a large fleet of users, we need to work on model efficiency i.e. make the model small while keeping a good accuracy.
+One of the today's challenge is to be able to handle large and deep neural networks. For that, we are limited by the computational efficiency. Since having cutting edge hardware is expensive and we want to reach a large fleet of users, we need to work on model computational efficiency (i.e. make the model smaller while keeping a good accuracy) to be able to deploy such models on cheaper and so less powerfull devices.
 
 Here are solutions that may be interesting to look at.
 
